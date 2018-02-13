@@ -48,7 +48,7 @@ public class LockScreenNoteThunderService extends Service {
         txtInsertNote.setTextSize(24f);
 
         //Set parameters for both controls (Create a separate param if this doesn't work for both)
-        params = new WindowManager.LayoutParams(WindowManager.LayoutParams.WRAP_CONTENT,WindowManager.LayoutParams.WRAP_CONTENT,WindowManager.LayoutParams.TYPE_SYSTEM_OVERLAY,WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE|WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL|WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED|WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH, PixelFormat.TRANSLUCENT);
+        params = new WindowManager.LayoutParams(WindowManager.LayoutParams.WRAP_CONTENT,WindowManager.LayoutParams.WRAP_CONTENT,WindowManager.LayoutParams.TYPE_SYSTEM_ALERT,WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE|WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL|WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED|WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH, PixelFormat.TRANSLUCENT);
         params.gravity = Gravity.BOTTOM;
 
         //Register Receiver
@@ -71,6 +71,7 @@ public class LockScreenNoteThunderService extends Service {
             if (intent.getAction().equals(Intent.ACTION_SCREEN_OFF)){
                 //if the thing is off then it will show
                 if (!ShowingBa){
+
                     windowManager.addView(lblNoteThunder, params);
                     windowManager.addView(txtInsertNote, params);
                     ShowingBa = true;
