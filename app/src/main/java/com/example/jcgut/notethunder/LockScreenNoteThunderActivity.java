@@ -1,11 +1,12 @@
 package com.example.jcgut.notethunder;
 
-import android.app.Service;
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.PixelFormat;
+import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.content.ContextCompat;
 import android.view.Gravity;
@@ -18,19 +19,14 @@ import android.widget.TextView;
 
 import java.util.Objects;
 
-public class LockScreenNoteThunderService extends Service {
+public class LockScreenNoteThunderActivity extends Activity {
+
+
     /*public LockScreenNoteThunderService() {
     }*/
 
     private BroadcastReceiver aReceiver;
     private boolean ShowingBa = false;
-
-    @Override
-    public IBinder onBind(Intent intent) {
-        // TODO: Return the communication channel to the service.
-        //throw new UnsupportedOperationException("Not yet implemented");
-        return null;
-    }
 
     private WindowManager windowManager;
     private EditText txtInsertNote;
@@ -41,16 +37,16 @@ public class LockScreenNoteThunderService extends Service {
     WindowManager.LayoutParams params,paramsLayout,paramsManual;
 
     @Override
-    public void onCreate(){
-        super.onCreate();
-
-        //Adding Layout to test TYPE_APPLICATION_LAYOUT Hanash
-        notePadLayout = new LinearLayout(this);
-        notePadLayout.setOrientation(LinearLayout.VERTICAL);
+    public void onCreate(Bundle savedInstance){
+        super.onCreate(savedInstance);
 
         windowManager = (WindowManager)getSystemService(WINDOW_SERVICE);
         notePadInflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         notePadView = notePadInflater.inflate(R.layout.notepad_layout,null);
+
+        //Adding Layout to test TYPE_APPLICATION_LAYOUT Hanash
+        notePadLayout = new LinearLayout(this);
+        notePadLayout.setOrientation(LinearLayout.VERTICAL);
 
         //Adding textview and edittext for fun
         lblNoteThunder = new TextView(this);
@@ -82,16 +78,11 @@ public class LockScreenNoteThunderService extends Service {
         windowManager.addView(notePadView,paramsManual);
 
         //Register Receiver
-        aReceiver = new LockScreenStateReceiver();
+        aReceiver = new LockScreenNoteThunderActivity.LockScreenStateReceiver();
         IntentFilter afilter = new IntentFilter(Intent.ACTION_SCREEN_OFF);
         afilter.addAction(Intent.ACTION_USER_PRESENT);
 
         registerReceiver(aReceiver, afilter);
-    }
-
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId){
-        return  START_STICKY;
     }
 
     public class LockScreenStateReceiver extends BroadcastReceiver{
@@ -104,7 +95,7 @@ public class LockScreenNoteThunderService extends Service {
 
                    /* windowManager.addView(lblNoteThunder, params);
                     windowManager.addView(txtInsertNote, params);*/
-                   windowManager.addView(notePadLayout,paramsLayout);
+                    windowManager.addView(notePadLayout,paramsLayout);
                     ShowingBa = true;
                 }
             }
@@ -114,7 +105,7 @@ public class LockScreenNoteThunderService extends Service {
                 if(ShowingBa){
                    /* windowManager.removeView(lblNoteThunder);
                     windowManager.removeView(txtInsertNote);*/
-                   windowManager.removeView(notePadLayout);
+                    windowManager.removeView(notePadLayout);
                     ShowingBa = false;
                 }
             }
@@ -132,7 +123,7 @@ public class LockScreenNoteThunderService extends Service {
         if(ShowingBa){
            /* windowManager.removeView(lblNoteThunder);
             windowManager.removeView(txtInsertNote);*/
-           windowManager.removeView(notePadLayout);
+            windowManager.removeView(notePadLayout);
             ShowingBa = false;
         }
         super.onDestroy();

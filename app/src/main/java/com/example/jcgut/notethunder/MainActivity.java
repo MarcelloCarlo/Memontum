@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        Intent intent = new Intent(this, LockScreenNoteThunderService.class);
+        Intent intent = new Intent(this, LockScreenNoteThunderActivity.class);
         startService(intent);
     }
 
