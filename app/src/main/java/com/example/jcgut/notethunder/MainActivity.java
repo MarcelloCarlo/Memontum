@@ -9,27 +9,37 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
+
+    TextView txtWelcome;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        txtWelcome = findViewById(R.id.txtWelcomeInfo);
+
+        FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                Snackbar.make(view, "Dagdag Note Ala-Tumblr Aesthetic", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
+               /* Intent intent = new Intent(MainActivity.this, LockScreenNoteThunderActivity.class);
+                startActivity(intent);*/
+
+               txtWelcome.setText(R.string.welcome1);
             }
         });
 
-        Intent intent = new Intent(this, LockScreenNoteThunderActivity.class);
-        startService(intent);
+        Intent intentService = new Intent(this, LockScreenNoteThunderService.class);
+        startService(intentService);
     }
 
     @Override
@@ -48,7 +58,25 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            return true;
+            txtWelcome.setText(R.string.welcome2);
+            Toast.makeText(this, "Wala Pa.", Toast.LENGTH_SHORT).show();
+        }
+
+        if (id == R.id.action_about) {
+            Toast.makeText(this, "Wala Paring Laman GOSH!", Toast.LENGTH_SHORT).show();
+        }
+        if (id == R.id.action_releaseNotepad) {
+
+           /* MenuItem release = findViewById(R.id.action_releaseNotepad);
+            release.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem menuItem) {
+
+
+                    return true;
+                }
+            });*/
+
         }
 
         return super.onOptionsItemSelected(item);

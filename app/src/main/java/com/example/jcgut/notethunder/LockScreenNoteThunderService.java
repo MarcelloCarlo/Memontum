@@ -22,8 +22,15 @@ public class LockScreenNoteThunderService extends Service {
     /*public LockScreenNoteThunderService() {
     }*/
 
+    LayoutInflater notePadInflater;
+    View notePadView;
+    WindowManager.LayoutParams params,paramsLayout,paramsManual;
     private BroadcastReceiver aReceiver;
     private boolean ShowingBa = false;
+    private WindowManager windowManager;
+    private EditText txtInsertNote;
+    private TextView lblNoteThunder;
+    private LinearLayout notePadLayout;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -31,14 +38,6 @@ public class LockScreenNoteThunderService extends Service {
         //throw new UnsupportedOperationException("Not yet implemented");
         return null;
     }
-
-    private WindowManager windowManager;
-    private EditText txtInsertNote;
-    private TextView lblNoteThunder;
-    private LinearLayout notePadLayout;
-    LayoutInflater notePadInflater;
-    View notePadView;
-    WindowManager.LayoutParams params,paramsLayout,paramsManual;
 
     @Override
     public void onCreate(){
@@ -56,30 +55,29 @@ public class LockScreenNoteThunderService extends Service {
         lblNoteThunder = new TextView(this);
         lblNoteThunder.setText("Tite");
         lblNoteThunder.setTextColor(ContextCompat.getColor(this, android.R.color.white));
-        lblNoteThunder.setTextSize(28f);
+        lblNoteThunder.setTextSize(40f);
         txtInsertNote = new EditText(this);
         txtInsertNote.setTextColor(ContextCompat.getColor(this,android.R.color.white));
         txtInsertNote.setTextSize(24f);
 
         //Set parameters for both controls (Create a separate param if this doesn't work for both)
         params = new WindowManager.LayoutParams(WindowManager.LayoutParams.WRAP_CONTENT,WindowManager.LayoutParams.WRAP_CONTENT,WindowManager.LayoutParams.TYPE_SYSTEM_ALERT,WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE|WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL|WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED|WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH, PixelFormat.TRANSLUCENT);
-        params.gravity = Gravity.BOTTOM;
+        params.gravity = Gravity.CENTER;
 
-        paramsLayout = new WindowManager.LayoutParams(WindowManager.LayoutParams.WRAP_CONTENT,WindowManager.LayoutParams.WRAP_CONTENT,/* WindowManager.LayoutParams.TYPE_APPLICATION_PANEL */ WindowManager.LayoutParams.TYPE_PHONE ,WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE|WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL|WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED|WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH, PixelFormat.TRANSLUCENT);
-        paramsLayout.gravity = Gravity.BOTTOM;
+        paramsLayout = new WindowManager.LayoutParams(WindowManager.LayoutParams.WRAP_CONTENT,WindowManager.LayoutParams.WRAP_CONTENT,/* WindowManager.LayoutParams.TYPE_APPLICATION_PANEL */ WindowManager.LayoutParams.TYPE_PHONE ,WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE|WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL|WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED|WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH, PixelFormat.OPAQUE);
+        paramsLayout.gravity = Gravity.CENTER;
 
         paramsManual = new WindowManager.LayoutParams(
                 WindowManager.LayoutParams.WRAP_CONTENT,
                 WindowManager.LayoutParams.WRAP_CONTENT,
                 WindowManager.LayoutParams.TYPE_PHONE,
-                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
-                PixelFormat.TRANSLUCENT);
-
+                WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED,
+                PixelFormat.TRANSPARENT);
         paramsManual.gravity = Gravity.CENTER;
         paramsManual.x=0;
         paramsManual.y=0;
 
-        windowManager.addView(notePadView,paramsManual);
+//        windowManager.addView(notePadView,paramsManual);
 
         //Register Receiver
         aReceiver = new LockScreenStateReceiver();
@@ -94,33 +92,6 @@ public class LockScreenNoteThunderService extends Service {
         return  START_STICKY;
     }
 
-    public class LockScreenStateReceiver extends BroadcastReceiver{
-
-        @Override
-        public void onReceive(Context ctx, Intent intent){
-            if (Objects.equals(intent.getAction(), Intent.ACTION_SCREEN_OFF)){
-                //if the thing is off then it will show
-                if (!ShowingBa){
-
-                   /* windowManager.addView(lblNoteThunder, params);
-                    windowManager.addView(txtInsertNote, params);*/
-                   windowManager.addView(notePadLayout,paramsLayout);
-                    ShowingBa = true;
-                }
-            }
-            else if(Objects.equals(intent.getAction(), Intent.ACTION_USER_PRESENT)){
-
-                //handle good stuff if the screen is unlocked
-                if(ShowingBa){
-                   /* windowManager.removeView(lblNoteThunder);
-                    windowManager.removeView(txtInsertNote);*/
-                   windowManager.removeView(notePadLayout);
-                    ShowingBa = false;
-                }
-            }
-        }
-    }
-
     @Override
     public void onDestroy(){
         //unregister receiver when the service is destroy unless if you want some complications, you  can modify it
@@ -130,11 +101,38 @@ public class LockScreenNoteThunderService extends Service {
 
         //it removes the view id the service is destroyed
         if(ShowingBa){
-           /* windowManager.removeView(lblNoteThunder);
-            windowManager.removeView(txtInsertNote);*/
-           windowManager.removeView(notePadLayout);
+            /*windowManager.removeView(lblNoteThunder);*/
+            /*windowManager.removeView(txtInsertNote);*/
+           windowManager.removeView(notePadView);
             ShowingBa = false;
         }
         super.onDestroy();
+    }
+
+    public class LockScreenStateReceiver extends BroadcastReceiver{
+
+        @Override
+        public void onReceive(Context ctx, Intent intent){
+            if (Objects.equals(intent.getAction(), Intent.ACTION_SCREEN_OFF)){
+                //if the thing is off then it will show
+                if (!ShowingBa){
+
+                   /* windowManager.addView(lblNoteThunder, params);*/
+                    /*windowManager.addView(txtInsertNote, params);*/
+                   windowManager.addView(notePadView,paramsManual);
+                    ShowingBa = true;
+                }
+            }
+            else if(Objects.equals(intent.getAction(), Intent.ACTION_USER_PRESENT)){
+
+                //handle good stuff if the screen is unlocked
+                if(ShowingBa){
+                   /* windowManager.removeView(lblNoteThunder);*/
+                   /* windowManager.removeView(txtInsertNote);*/
+                   windowManager.removeView(notePadView);
+                    ShowingBa = false;
+                }
+            }
+        }
     }
 }

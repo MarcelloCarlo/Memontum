@@ -40,13 +40,17 @@ public class LockScreenNoteThunderActivity extends Activity {
     public void onCreate(Bundle savedInstance){
         super.onCreate(savedInstance);
 
+        //Adding Layout to test TYPE_APPLICATION_LAYOUT Hanash
+        notePadLayout = new LinearLayout(this);
+        notePadLayout.setOrientation(LinearLayout.VERTICAL);
+
         windowManager = (WindowManager)getSystemService(WINDOW_SERVICE);
         notePadInflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         notePadView = notePadInflater.inflate(R.layout.notepad_layout,null);
 
         //Adding Layout to test TYPE_APPLICATION_LAYOUT Hanash
-        notePadLayout = new LinearLayout(this);
-        notePadLayout.setOrientation(LinearLayout.VERTICAL);
+      /*  notePadLayout = new LinearLayout(this);
+        notePadLayout.setOrientation(LinearLayout.VERTICAL);*/
 
         //Adding textview and edittext for fun
         lblNoteThunder = new TextView(this);
@@ -67,7 +71,7 @@ public class LockScreenNoteThunderActivity extends Activity {
         paramsManual = new WindowManager.LayoutParams(
                 WindowManager.LayoutParams.WRAP_CONTENT,
                 WindowManager.LayoutParams.WRAP_CONTENT,
-                WindowManager.LayoutParams.TYPE_PHONE,
+                WindowManager.LayoutParams.TYPE_APPLICATION_PANEL,
                 WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
                 PixelFormat.TRANSLUCENT);
 
