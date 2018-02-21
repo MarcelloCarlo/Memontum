@@ -12,6 +12,7 @@ import android.support.v4.content.ContextCompat;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -25,9 +26,9 @@ public class LockScreenNoteThunderActivity extends Activity {
     /*public LockScreenNoteThunderService() {
     }*/
 
+    Window winLock;
     private BroadcastReceiver aReceiver;
     private boolean ShowingBa = false;
-
     private WindowManager windowManager;
     private EditText txtInsertNote;
     private TextView lblNoteThunder;
@@ -39,6 +40,14 @@ public class LockScreenNoteThunderActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstance){
         super.onCreate(savedInstance);
+
+        winLock = getWindow();
+        WindowManager.LayoutParams winLockParams = winLock.getAttributes();
+        // winParams.flags |= WindowManager.LayoutParams.FLAG_FULLSCREEN;
+        // winParams.flags |= WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN;
+        winLockParams.flags |= WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED;
+        // winParams.flags |= WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON;
+        winLock.setAttributes(winLockParams);
 
         //Adding Layout to test TYPE_APPLICATION_LAYOUT Hanash
         notePadLayout = new LinearLayout(this);
@@ -71,9 +80,9 @@ public class LockScreenNoteThunderActivity extends Activity {
         paramsManual = new WindowManager.LayoutParams(
                 WindowManager.LayoutParams.WRAP_CONTENT,
                 WindowManager.LayoutParams.WRAP_CONTENT,
-                WindowManager.LayoutParams.TYPE_APPLICATION_PANEL,
-                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
-                PixelFormat.TRANSLUCENT);
+                WindowManager.LayoutParams.TYPE_PHONE,
+                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE| WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD| WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED,
+                PixelFormat.OPAQUE);
 
         paramsManual.gravity = Gravity.CENTER;
         paramsManual.x=0;
@@ -99,7 +108,7 @@ public class LockScreenNoteThunderActivity extends Activity {
 
                    /* windowManager.addView(lblNoteThunder, params);
                     windowManager.addView(txtInsertNote, params);*/
-                    windowManager.addView(notePadLayout,paramsLayout);
+                    windowManager.addView(notePadView,paramsLayout);
                     ShowingBa = true;
                 }
             }

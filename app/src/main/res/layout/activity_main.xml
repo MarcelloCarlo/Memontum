@@ -21,20 +21,22 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginStart="240dp">
+                android:layout_marginStart="235dp">
                 <ImageButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@android:drawable/ic_menu_camera"
+                    app:srcCompat="@drawable/ic_camera_alt_black_24dp"
                     android:id="@+id/btnAddImageNote"
+                    android:layout_marginTop="5dp"
                     android:background="@color/colorPrimary"
                     android:theme="@style/AppTheme.PopupOverlay" />
                 <ImageButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@android:drawable/ic_btn_speak_now"
-                    android:id="@+id/btnAddVoiceNoe"
-                    android:layout_marginStart="10dp"
+                    app:srcCompat="@drawable/ic_mic_black_24dp"
+                    android:id="@+id/btnAddVoiceNote"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="5dp"
                     android:background="@color/colorPrimary"
                     android:theme="@style/AppTheme.PopupOverlay"/>
             </LinearLayout>
@@ -51,6 +53,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
-        app:srcCompat="@android:drawable/ic_menu_edit" />
+        app:srcCompat="@drawable/ic_mode_edit_black_24dp" />
 
 </android.support.design.widget.CoordinatorLayout>
