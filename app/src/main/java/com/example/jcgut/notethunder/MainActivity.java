@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
         imgCardNote = findViewById(R.id.imageViewNote);
         imgCardNote.setImageURI(null);
         Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        //setSupportActionBar(toolbar);
 
         txtWelcome = findViewById(R.id.txtWelcomeInfo);
 

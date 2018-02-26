@@ -10,11 +10,11 @@
         android:layout_height="wrap_content"
         android:text="@string/insert_note"
         android:layout_gravity="center"
-        android:textSize="25dp"/>
+        android:textSize="25dp" />
     <EditText
         android:id="@+id/txtNoteString"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="textImeMultiLine"/>
+        android:inputType="textImeMultiLine" />
 
 </LinearLayout>
