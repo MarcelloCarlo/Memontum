@@ -11,7 +11,6 @@ import android.support.v4.content.ContextCompat;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.Window;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -50,7 +49,7 @@ public class LockScreenNoteThunderService extends Service {
 
         windowManager = (WindowManager)getSystemService(WINDOW_SERVICE);
         notePadInflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        notePadView = notePadInflater.inflate(R.layout.notepad_layout,null);
+        notePadView = notePadInflater.inflate(R.layout.memofield_layout,null);
 
         //Adding textview and edittext for fun
         lblNoteThunder = new TextView(this);

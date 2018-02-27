@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.PixelFormat;
 import android.os.Bundle;
-import android.os.IBinder;
 import android.support.v4.content.ContextCompat;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -55,7 +54,7 @@ public class LockScreenNoteThunderActivity extends Activity {
 
         windowManager = (WindowManager)getSystemService(WINDOW_SERVICE);
         notePadInflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        notePadView = notePadInflater.inflate(R.layout.notepad_layout,null);
+        notePadView = notePadInflater.inflate(R.layout.memofield_layout,null);
 
         //Adding Layout to test TYPE_APPLICATION_LAYOUT Hanash
       /*  notePadLayout = new LinearLayout(this);

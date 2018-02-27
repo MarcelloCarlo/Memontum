@@ -30,7 +30,7 @@
                     android:layout_marginTop="5dp"
                     android:background="@color/colorPrimary"
                     android:theme="@style/AppTheme.PopupOverlay"
-                    app:srcCompat="@drawable/ic_camera_alt_black_24dp" />
+                    app:srcCompat="@drawable/ic_camera_alt_black_24dp"  />
                 <ImageButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -39,7 +39,7 @@
                     android:layout_marginStart="20dp"
                     android:layout_marginTop="5dp"
                     android:background="@color/colorPrimary"
-                    android:theme="@style/AppTheme.PopupOverlay"/>
+                    android:theme="@style/AppTheme.PopupOverlay"  />
                 <ImageButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -48,7 +48,7 @@
                     android:layout_marginStart="20dp"
                     android:layout_marginTop="5dp"
                     android:background="@color/colorPrimary"
-                    android:theme="@style/AppTheme.PopupOverlay"/>
+                    android:theme="@style/AppTheme.PopupOverlay" />
             </LinearLayout>
 
         </android.support.v7.widget.Toolbar>

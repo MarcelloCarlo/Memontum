@@ -43,8 +43,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         LayoutInflater mainLayout = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mainView = mainLayout.inflate(R.layout.activity_main, null);
-        imgCardNote = findViewById(R.id.imageViewNote);
-        imgCardNote.setImageURI(null);
+//        imgCardNote = findViewById(R.id.imageViewNote);
+//        imgCardNote.setImageURI(null);
         Toolbar toolbar = findViewById(R.id.toolbar);
         //setSupportActionBar(toolbar);
 
