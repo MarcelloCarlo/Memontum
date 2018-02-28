@@ -51,7 +51,7 @@ public class AddEditMemoActivity extends Activity {
         databaseAccess.open();
         if(memoSerialize == null) {
             //Add memo
-            MemoSerialize tmp = new MemoSerialize()
+            MemoSerialize tmp = new MemoSerialize();
                     tmp.setText((txtNote.getText().toString()));
             databaseAccess.save(tmp);
         } else {

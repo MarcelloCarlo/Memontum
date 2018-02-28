@@ -9,8 +9,8 @@ import android.database.sqlite.SQLiteDatabase;
  */
 
 class MemoDatabaseOpenHelper extends SQLiteOpenHelper {
-    public static final String DATABASE = "Memos.db";
-    public static final String TABLE = "Memo";
+    public static final String DATABASE = "MemosDB.db";
+    public static final String TABLE = "Memos";
     public static final int VERSION = 1;
 
     public MemoDatabaseOpenHelper(Context context){

@@ -54,16 +54,17 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Dagdag Note Ala-Tumblr Aesthetic", Snackbar.LENGTH_LONG)
+               /* Snackbar.make(view, "Dagdag Note Ala-Tumblr Aesthetic", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
-               /* Intent intent = new Intent(MainActivity.this, LockScreenNoteThunderActivity.class);
-                startActivity(intent);*/
+               Intent intent = new Intent(MainActivity.this, LockScreenNoteThunderActivity.class);
+                startActivity(intent);
 
-                txtWelcome.setText(R.string.welcome1);
+                txtWelcome.setText(R.string.welcome1);*/
+               onAddMemoClicked();
             }
         });
 
-        Intent intentService = new Intent(this, LockScreenNoteThunderService.class);
+        Intent intentService = new Intent(this, LockScreenMemontumService.class);
         startService(intentService);
 
        /* Intent intentActivity = new Intent(this,LockScreenNoteThunderActivity.class);
@@ -113,6 +114,11 @@ public class MainActivity extends AppCompatActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
+    }
+
+    public void onAddMemoClicked(){
+        Intent intentAddEditMemo = new Intent(this,AddEditMemoActivity.class);
+        startActivity(intentAddEditMemo);
     }
 
     @Override

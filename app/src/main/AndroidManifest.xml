@@ -37,13 +37,13 @@
             </intent-filter>
         </activity>
 
-        <service android:name=".LockScreenNoteThunderService" />
+        <service android:name=".LockScreenMemontumService" />
         <activity
             android:name=".LockScreenNoteThunderActivity"
             android:screenOrientation="sensorPortrait"
             android:showOnLockScreen="true" />
-        <activity
-            android:name=".MainActivity" />
+        <activity android:name=".MainActivity" />
+        <activity android:name=".AddEditMemoActivity" />
     </application>
 
 </manifest>

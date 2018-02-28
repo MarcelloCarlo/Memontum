@@ -18,7 +18,7 @@ import android.widget.TextView;
 
 import java.util.Objects;
 
-public class LockScreenNoteThunderService extends Service {
+public class LockScreenMemontumService extends Service {
     /*public LockScreenNoteThunderService() {
     }*/
 

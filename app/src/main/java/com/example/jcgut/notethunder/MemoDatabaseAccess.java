@@ -62,7 +62,7 @@ public class MemoDatabaseAccess {
 
     public List getAllMemos(){
         List memos = new ArrayList<>();
-        Cursor cursor = database.rawQuery("SELECT * FROM Memo ORDER BY date DESC",null);
+        Cursor cursor = database.rawQuery("SELECT * FROM Memos ORDER BY date DESC",null);
         cursor.moveToFirst();
         while (!cursor.isAfterLast()){
             Long time = cursor.getLong(0);
