@@ -18,7 +18,7 @@ public class MemoDatabaseAccess {
     private MemoDatabaseOpenHelper openHelper;
     private static volatile MemoDatabaseAccess instance;
 
-    private MemoDatabaseAccess (Context context){
+    public MemoDatabaseAccess (Context context){
         this.openHelper = new MemoDatabaseOpenHelper(context);
     }
 
