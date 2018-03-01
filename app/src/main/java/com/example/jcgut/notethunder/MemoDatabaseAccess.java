@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -14,8 +15,8 @@ import java.util.List;
  */
 
 public class MemoDatabaseAccess {
-    private SQLiteDatabase database;
-    private MemoDatabaseOpenHelper openHelper;
+    SQLiteDatabase database;
+    MemoDatabaseOpenHelper openHelper;
     private static volatile MemoDatabaseAccess instance;
 
     public MemoDatabaseAccess (Context context){
@@ -41,36 +42,44 @@ public class MemoDatabaseAccess {
 
     public void save(MemoSerialize memoSerialize){
         ContentValues values = new ContentValues();
-        values.put("date",memoSerialize.getTime());
+        values.put("dates",memoSerialize.getTime());
         values.put("memo",memoSerialize.getText());
         String date = Long.toString(memoSerialize.getTime());
-        database.update(MemoDatabaseOpenHelper.TABLE,values,"date = ?",new String[]{date});
+        database.update(MemoDatabaseOpenHelper.TABLE,values,"dates = ?",new String[]{date});
     }
 
     public void update(MemoSerialize memoSerialize){
         ContentValues values = new ContentValues();
-        values.put("date", new Date().getTime());
+        values.put("dates", new Date().getTime());
         values.put("memo", memoSerialize.getText());
         String date = Long.toString(memoSerialize.getTime());
-        database.update(MemoDatabaseOpenHelper.TABLE,values,"date = ?", new String[]{date});
+        database.update(MemoDatabaseOpenHelper.TABLE,values,"dates = ?", new String[]{date});
     }
 
     public void delete(MemoSerialize memoSerialize){
         String date=Long.toString(memoSerialize.getTime());
-        database.delete(MemoDatabaseOpenHelper.TABLE,"date = ?", new String[]{date});
+        database.delete(MemoDatabaseOpenHelper.TABLE,"dates = ?", new String[]{date});
     }
 
-    public List getAllMemos(){
-        List memos = new ArrayList<>();
-        Cursor cursor = database.rawQuery("SELECT * FROM Memos ORDER BY date DESC",null);
+    public List<MemoSerialize> getAllMemos(){
+        List<MemoSerialize> memosModel = new ArrayList<>();
+        SQLiteDatabase memoDB = openHelper.getReadableDatabase();
+        String[] columns = {"date","memo"};
+        String querySql = "SELECT * FROM Memos ORDER BY dates DESC";
+         Cursor cursor = memoDB.rawQuery("SELECT * FROM Memos ORDER BY dates",null);
+        if (cursor == null){
+            Toast.makeText(null,"OhSnap",Toast.LENGTH_SHORT).show();
+        }
+
+       /* cursor = database.query("Memos",columns,null,null,null,null,null);*/
         cursor.moveToFirst();
         while (!cursor.isAfterLast()){
             Long time = cursor.getLong(0);
             String text = cursor.getString(1);
-            memos.add(new MemoSerialize(time,text));
+            memosModel.add(new MemoSerialize(time,text));
             cursor.moveToNext();
         }
         cursor.close();
-        return memos;
+        return memosModel;
     }
 }

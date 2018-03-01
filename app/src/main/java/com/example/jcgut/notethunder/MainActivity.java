@@ -40,13 +40,14 @@ public class MainActivity extends AppCompatActivity {
     View mainView;
     Uri uriFileOutput;
     ImageView imgCardNote;
-    String dir="";
+    String dir = "";
     MemoDatabaseOpenHelper memoHelper;
     MemoDatabaseAccess memoDatabaseAccess;
     List<MemoSerialize> memoDBList;
     RecyclerView recViewMemos;
     RecyclerView.Adapter adapterMemo;
     RecyclerView.LayoutManager layoutManagerMemo;
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -54,10 +55,10 @@ public class MainActivity extends AppCompatActivity {
         mainView = mainLayout.inflate(R.layout.activity_main, null);
 //        imgCardNote = findViewById(R.id.imageViewNote);
 //        imgCardNote.setImageURI(null);
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        //Toolbar toolbar = findViewById(R.id.toolbar);
         //setSupportActionBar(toolbar);
 
-        txtWelcome = findViewById(R.id.txtWelcomeInfo);
+        // txtWelcome = findViewById(R.id.txtWelcomeInfo);
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -69,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
 
                 txtWelcome.setText(R.string.welcome1);*/
-               onAddMemoClicked();
+                onAddMemoClicked();
             }
         });
 
@@ -83,8 +84,8 @@ public class MainActivity extends AppCompatActivity {
         File newdir = new File(dir);
         newdir.mkdirs();
 
-        btnImgCamera = findViewById(R.id.btnAddImageNote);
-        btnImgCamera.setOnClickListener(new View.OnClickListener() {
+        //btnImgCamera = findViewById(R.id.btnAddImageNote);
+       /* btnImgCamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 imgCount++;
@@ -103,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivityForResult(cameraIntent, TAKE_PHOTO_COUNT);
 
             }
-        });
+        });*/
 
         memoDatabaseAccess = new MemoDatabaseAccess(this);
         memoDBList = new ArrayList<MemoSerialize>();
@@ -115,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
         layoutManagerMemo = new LinearLayoutManager(this);
         recViewMemos.setLayoutManager(layoutManagerMemo);
 
-        adapterMemo = new MemoRecyclerAdapter(this,memoDBList);
+        adapterMemo = new MemoRecyclerAdapter(this, memoDBList);
         recViewMemos.setAdapter(adapterMemo);
     }
 
@@ -128,7 +129,7 @@ public class MainActivity extends AppCompatActivity {
             Log.d("ImageCapture", "Picture Note Saved");
         }
 
-        uriFileOutput = Uri.parse(dir + "NoteImage" + imgCount + ".jpg" );
+        uriFileOutput = Uri.parse(dir + "NoteImage" + imgCount + ".jpg");
         imgCardNote.setImageURI(uriFileOutput);
     }
 
@@ -138,8 +139,8 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    public void onAddMemoClicked(){
-        Intent intentAddEditMemo = new Intent(this,AddEditMemoActivity.class);
+    public void onAddMemoClicked() {
+        Intent intentAddEditMemo = new Intent(this, AddEditMemoActivity.class);
         startActivity(intentAddEditMemo);
     }
 
