@@ -37,13 +37,21 @@
             </intent-filter>
         </activity>
 
-        <service android:name=".LockScreenMemontumService" />
+        <service android:name=".LockScreenMemontumService"
+            android:windowSoftInputMode="adjustResize"/>
         <activity
             android:name=".LockScreenNoteThunderActivity"
             android:screenOrientation="sensorPortrait"
             android:showOnLockScreen="true" />
         <activity android:name=".MainActivity" />
-        <activity android:name=".AddEditMemoActivity" />
+        <activity android:name=".AddEditMemoActivity"
+            android:windowSoftInputMode="adjustResize"/>
+        <receiver android:name=".GoodIntentions">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.QUICKBOOT_POWERON"/>
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

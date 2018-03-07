@@ -2,7 +2,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AddEditMemoActivity">
+    tools:context=".AddEditMemoActivity"
+    android:id="@+id/insertMemolayout"
+    android:background="#363634">
+    <EditText
+        android:id="@+id/txtNote"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:inputType="textImeMultiLine"
+        android:gravity="top|center_vertical" >
+        <requestFocus/>
+    </EditText>
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -10,36 +21,25 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_gravity="bottom">
 
         <Button
             android:id="@+id/btnSave"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:layout_weight="1"
-            android:text="Save" />
+            android:text="Save"
+            android:drawableLeft="@drawable/ic_save_black_24dp"/>
 
         <Button
             android:id="@+id/btnCancel"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:layout_weight="1"
-            android:text="Cancel" />
+            android:text="Cancel"
+            android:drawableLeft="@drawable/ic_cancel_black_24dp"/>
     </LinearLayout>
-
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@id/linearLayout"
-        android:layout_alignParentTop="true"
-        android:fillViewport="true">
-
-        <EditText
-            android:id="@+id/txtNote"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="top|left" />
-    </ScrollView>
 </RelativeLayout>

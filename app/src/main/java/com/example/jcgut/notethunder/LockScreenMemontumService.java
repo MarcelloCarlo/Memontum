@@ -7,132 +7,108 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.PixelFormat;
 import android.os.IBinder;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Objects;
 
-public class LockScreenMemontumService extends Service {
-    /*public LockScreenNoteThunderService() {
-    }*/
+public class LockScreenMemontumService extends Service implements View.OnClickListener {
 
-    LayoutInflater notePadInflater;
-    View notePadView;
-    WindowManager.LayoutParams params,paramsLayout,paramsManual;
-    private BroadcastReceiver aReceiver;
-    private boolean ShowingBa = false;
+
+    private LinearLayout linearLayout;
+    private WindowManager.LayoutParams layoutParams;
     private WindowManager windowManager;
-    private EditText txtInsertNote;
-    private TextView lblNoteThunder;
-    private LinearLayout notePadLayout;
+    private MemoSerialize memoSerialize;
+    Button btnCancel,btnSave;
+    EditText txtNote;
+
 
     @Override
     public IBinder onBind(Intent intent) {
-        // TODO: Return the communication channel to the service.
-        //throw new UnsupportedOperationException("Not yet implemented");
+        // Not used
         return null;
     }
 
     @Override
-    public void onCreate(){
+    public void onCreate() {
         super.onCreate();
-
-        //Adding Layout to test TYPE_APPLICATION_LAYOUT Hanash
-        notePadLayout = new LinearLayout(this);
-        notePadLayout.setOrientation(LinearLayout.VERTICAL);
-
-        windowManager = (WindowManager)getSystemService(WINDOW_SERVICE);
-        notePadInflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        notePadView = notePadInflater.inflate(R.layout.memofield_layout,null);
-
-        //Adding textview and edittext for fun
-        lblNoteThunder = new TextView(this);
-        lblNoteThunder.setText("Tite");
-        lblNoteThunder.setTextColor(ContextCompat.getColor(this, android.R.color.white));
-        lblNoteThunder.setTextSize(40f);
-        txtInsertNote = new EditText(this);
-        txtInsertNote.setTextColor(ContextCompat.getColor(this,android.R.color.white));
-        txtInsertNote.setTextSize(24f);
-
-        //Set parameters for both controls (Create a separate param if this doesn't work for both)
-        params = new WindowManager.LayoutParams(WindowManager.LayoutParams.WRAP_CONTENT,WindowManager.LayoutParams.WRAP_CONTENT,WindowManager.LayoutParams.TYPE_SYSTEM_ALERT,WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE|WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL|WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED|WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH, PixelFormat.TRANSLUCENT);
-        params.gravity = Gravity.CENTER;
-
-        paramsLayout = new WindowManager.LayoutParams(WindowManager.LayoutParams.WRAP_CONTENT,WindowManager.LayoutParams.WRAP_CONTENT,/* WindowManager.LayoutParams.TYPE_APPLICATION_PANEL */ WindowManager.LayoutParams.TYPE_PHONE ,WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE|WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL|WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED|WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH, PixelFormat.OPAQUE);
-        paramsLayout.gravity = Gravity.CENTER;
-
-        paramsManual = new WindowManager.LayoutParams(
-                WindowManager.LayoutParams.WRAP_CONTENT,
-                WindowManager.LayoutParams.WRAP_CONTENT,
-                WindowManager.LayoutParams.TYPE_PHONE,
-                WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED,
+        IntentFilter intentFilter = new IntentFilter(Intent.ACTION_SCREEN_OFF);
+        registerReceiver(screenReceiver, intentFilter);
+        windowManager = ((WindowManager) getSystemService(WINDOW_SERVICE));
+        layoutParams = new WindowManager.LayoutParams(
+                WindowManager.LayoutParams.MATCH_PARENT,
+                WindowManager.LayoutParams.MATCH_PARENT,
+                WindowManager.LayoutParams.TYPE_SYSTEM_ERROR,
+                WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN //draw on status bar
+                        | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD
+                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION,// hiding the home screen button
                 PixelFormat.TRANSPARENT);
-        paramsManual.gravity = Gravity.CENTER;
-        paramsManual.x=0;
-        paramsManual.y=0;
+    }
 
-//        windowManager.addView(notePadView,paramsManual);
+    private void init() {
+        linearLayout = new LinearLayout(this);
+        windowManager.addView(linearLayout, layoutParams);
+        ((LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE)).inflate(R.layout.memofield_layout, linearLayout);
+        btnCancel = linearLayout.findViewById(R.id.btnCancel);
+        btnCancel.setOnClickListener(this);
+        btnSave = linearLayout.findViewById(R.id.btnSave);
+        btnSave.setOnClickListener(this);
+        txtNote = linearLayout.findViewById(R.id.txtNote);
 
-        //Register Receiver
-        aReceiver = new LockScreenStateReceiver();
-        IntentFilter afilter = new IntentFilter(Intent.ACTION_SCREEN_OFF);
-        afilter.addAction(Intent.ACTION_USER_PRESENT);
-
-        registerReceiver(aReceiver, afilter);
     }
 
     @Override
-    public int onStartCommand(Intent intent, int flags, int startId){
-        return  START_STICKY;
+    public void onClick(View view) {
+
+        switch (view.getId()){
+
+            case R.id.btnCancel:
+                windowManager.removeView(linearLayout);
+                linearLayout = null;
+                break;
+            case R.id.btnSave:
+                MemoDatabaseAccess databaseAccess = MemoDatabaseAccess.getInstance(this);
+                databaseAccess.open();
+                if(memoSerialize == null) {
+                    //Add memo
+                    MemoSerialize tmp = new MemoSerialize();
+                    tmp.setText((txtNote.getText().toString()));
+                    databaseAccess.save(tmp);
+                } else {
+                    memoSerialize.setText((txtNote.getText().toString()));
+                    databaseAccess.update(memoSerialize);
+                }
+                databaseAccess.close();
+                break;
+            default:
+                break;
+        }
+
     }
 
     @Override
-    public void onDestroy(){
-        //unregister receiver when the service is destroy unless if you want some complications, you  can modify it
-        if(aReceiver != null){
-            unregisterReceiver(aReceiver);
-        }
-
-        //it removes the view id the service is destroyed
-        if(ShowingBa){
-            /*windowManager.removeView(lblNoteThunder);*/
-            /*windowManager.removeView(txtInsertNote);*/
-           windowManager.removeView(notePadView);
-            ShowingBa = false;
-        }
+    public void onDestroy() {
+        unregisterReceiver(screenReceiver);
         super.onDestroy();
     }
 
-    public class LockScreenStateReceiver extends BroadcastReceiver{
-
+    BroadcastReceiver screenReceiver = new BroadcastReceiver() {
         @Override
-        public void onReceive(Context ctx, Intent intent){
-            if (Objects.equals(intent.getAction(), Intent.ACTION_SCREEN_OFF)){
-                //if the thing is off then it will show
-                if (!ShowingBa){
-
-                   /* windowManager.addView(lblNoteThunder, params);*/
-                    /*windowManager.addView(txtInsertNote, params);*/
-                   windowManager.addView(notePadView,paramsManual);
-                    ShowingBa = true;
-                }
-            }
-            else if(Objects.equals(intent.getAction(), Intent.ACTION_USER_PRESENT)){
-
-                //handle good stuff if the screen is unlocked
-                if(ShowingBa){
-                   /* windowManager.removeView(lblNoteThunder);*/
-                   /* windowManager.removeView(txtInsertNote);*/
-                   windowManager.removeView(notePadView);
-                    ShowingBa = false;
-                }
+        public void onReceive(Context context, Intent intent) {
+            if (intent.getAction().equals(Intent.ACTION_SCREEN_OFF) && linearLayout == null) {
+                init();
             }
         }
-    }
+    };
+
+
 }
