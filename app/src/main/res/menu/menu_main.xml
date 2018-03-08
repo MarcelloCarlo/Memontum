@@ -8,7 +8,7 @@
         android:title="@string/action_settings"
         app:showAsAction="never" />
     <item
-        android:id="@+id/action_releaseNotepad"
+        android:id="@+id/action_inflate"
         android:orderInCategory="200"
         android:title="@string/menu_inflate"
         app:showAsAction="collapseActionView"/>

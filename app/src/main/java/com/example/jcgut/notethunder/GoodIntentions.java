@@ -15,6 +15,7 @@ public class GoodIntentions extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        context.startService(new Intent(context, LockScreenMemontumService.class));
+        //context.startService(new Intent(context, LockScreenMemontumService.class));
+        context.startActivity(new Intent(context, LockScreenMomentumActivity.class));
     }
 }
