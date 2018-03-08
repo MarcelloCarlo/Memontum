@@ -1,18 +1,16 @@
 package com.example.jcgut.notethunder;
 
-import android.app.Service;
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.PixelFormat;
 import android.net.Uri;
+import android.os.Bundle;
 import android.os.IBinder;
 import android.provider.MediaStore;
-import android.support.design.widget.Snackbar;
-import android.support.v4.content.ContextCompat;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
@@ -20,32 +18,30 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.example.jcgut.notethunder.cutomEdittext.LinedEdittext;
 import com.example.jcgut.notethunder.domain.Memo;
 import com.example.jcgut.notethunder.interfaces.DetailInterface;
 
 import java.sql.SQLException;
 import java.util.Date;
-import java.util.Objects;
 
-import static android.app.Activity.RESULT_OK;
 import static android.support.v4.app.ActivityCompat.startActivityForResult;
 import static com.example.jcgut.notethunder.MainActivity.REQ_CAMERA;
 import static com.example.jcgut.notethunder.MainActivity.REQ_GALLERY;
 
-public class LockScreenMemontumService extends Service {
+/**
+ * Created by jcgut on 3/8/2018.
+ * Modified : 3/8/2018
+ */
 
+public class LockScreenMomentumActivity extends Activity {
 
     private LinearLayout linearLayout;
     private WindowManager.LayoutParams layoutParams;
     private WindowManager windowManager;
     Button btnCancel,btnSave,btnCamera,btnGallery;
-    EditText txtTitle;
-    LinedEdittext txtContext;
+    EditText txtTitle,txtContext;
     int id = 0;
     Uri fileUri = null;
     DetailInterface detailInterface = null;
@@ -55,14 +51,8 @@ public class LockScreenMemontumService extends Service {
     String date="";
 
     @Override
-    public IBinder onBind(Intent intent) {
-        // Not used
-        return null;
-    }
-
-    @Override
-    public void onCreate() {
-        super.onCreate();
+    public void onCreate(Bundle savedInstance) {
+        super.onCreate(savedInstance);
         IntentFilter intentFilter = new IntentFilter(Intent.ACTION_SCREEN_OFF);
         registerReceiver(screenReceiver, intentFilter);
         windowManager = ((WindowManager) getSystemService(WINDOW_SERVICE));
@@ -114,14 +104,14 @@ public class LockScreenMemontumService extends Service {
                     title = txtTitle.getText().toString();
                     content = txtContext.getText().toString();
                     i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    //startActivityForResult(i, REQ_CAMERA);
+                    startActivityForResult(i, REQ_CAMERA);
                     break;
                 case R.id.btnGallery :
                     title = txtTitle.getText().toString();
                     content = txtContext.getText().toString();
                     i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                     i.setType("image/*");
-                    //startActivityForResult( Intent.createChooser(i,"Select Picture") , REQ_GALLERY);
+                    startActivityForResult( Intent.createChooser(i,"Select Picture") , REQ_GALLERY);
                     break;
                 default:
                     break;
@@ -137,8 +127,8 @@ public class LockScreenMemontumService extends Service {
         super.onDestroy();
     }
 
-   // @Override
-    /*public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
             case REQ_CAMERA :
@@ -159,7 +149,7 @@ public class LockScreenMemontumService extends Service {
                 }
                 break;
         }
-    }*/
+    }
 
     private Memo makeMemo() {
         Memo memo = new Memo();
@@ -178,6 +168,4 @@ public class LockScreenMemontumService extends Service {
             }
         }
     };
-
-
 }

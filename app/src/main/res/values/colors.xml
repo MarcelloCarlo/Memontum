@@ -3,4 +3,5 @@
     <color name="colorPrimary">#5770ff</color>
     <color name="colorPrimaryDark">#3f54dc</color>
     <color name="colorAccent">#f4d53d</color>
+    <color name="memoColour">#e0000000</color>
 </resources>
