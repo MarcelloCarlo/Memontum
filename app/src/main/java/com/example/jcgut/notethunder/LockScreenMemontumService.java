@@ -39,7 +39,6 @@ import static com.example.jcgut.notethunder.MainActivity.REQ_GALLERY;
 
 public class LockScreenMemontumService extends Service {
 
-
     private LinearLayout linearLayout;
     private WindowManager.LayoutParams layoutParams;
     private WindowManager windowManager;

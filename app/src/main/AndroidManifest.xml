@@ -2,7 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.jcgut.notethunder">
 
-    <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.GET_TASKS" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
@@ -38,7 +37,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".LockScreenMomentumActivity"
-            android:windowSoftInputMode="adjustPan"/>
+            android:windowSoftInputMode="adjustPan"
+            android:showOnLockScreen="true"/>
         <service android:name=".LockScreenMemontumService"
             android:windowSoftInputMode="adjustResize"/>
         <receiver android:name=".GoodIntentions">

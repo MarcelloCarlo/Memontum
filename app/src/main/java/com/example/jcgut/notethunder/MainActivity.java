@@ -64,10 +64,10 @@ public class MainActivity extends AppCompatActivity implements ListInterface, De
         checkPermission();
 
         if (inflateConfig == 1) {
-            Intent lockscreenService = new Intent(this, LockScreenMemontumService.class);
-            startService(lockscreenService);
-          /* Intent lockscreenActivity = new Intent(this, LockScreenMomentumActivity.class);
-           startActivity(lockscreenActivity);*/
+            /*Intent lockscreenService = new Intent(this, LockScreenMemontumService.class);
+            startService(lockscreenService);*/
+           Intent lockscreenActivity = new Intent(this, LockScreenMomentumActivity.class);
+           startActivity(lockscreenActivity);
         } else if (inflateConfig == 0){
             Snackbar.make(findViewById(R.id.relay),"Inflater on Lockscreen is Off",Snackbar.LENGTH_SHORT).setAction("action",null).show();
         } else {
@@ -120,6 +120,8 @@ public class MainActivity extends AppCompatActivity implements ListInterface, De
         }
         if (id == R.id.action_inflate) {
             Snackbar.make(findViewById(R.id.relay), "C'mon Teletubby, Teleport us to Mars! ", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+            Intent lockscreenActivity = new Intent(this, LockScreenMomentumActivity.class);
+            startActivity(lockscreenActivity);
         }
         return super.onOptionsItemSelected(item);
     }

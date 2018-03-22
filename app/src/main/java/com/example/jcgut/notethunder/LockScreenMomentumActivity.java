@@ -52,6 +52,7 @@ public class LockScreenMomentumActivity extends Activity {
 
     @Override
     public void onCreate(Bundle savedInstance) {
+        setContentView(R.layout.activity_splash_screen);
         super.onCreate(savedInstance);
         IntentFilter intentFilter = new IntentFilter(Intent.ACTION_SCREEN_OFF);
         registerReceiver(screenReceiver, intentFilter);
@@ -61,8 +62,9 @@ public class LockScreenMomentumActivity extends Activity {
                 WindowManager.LayoutParams.MATCH_PARENT,
                 WindowManager.LayoutParams.TYPE_SYSTEM_ERROR,
                 //WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN //draw on status bar
-                WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN
-                        | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD
+                WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
+                        | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD | WindowManager.LayoutParams.FLAG_FULLSCREEN | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
+                | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON | WindowManager.LayoutParams.FLAG_FULLSCREEN
                         | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION, //hiding the home screen button
                 PixelFormat.TRANSPARENT);
     }
