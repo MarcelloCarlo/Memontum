@@ -64,10 +64,10 @@ public class MainActivity extends AppCompatActivity implements ListInterface, De
         checkPermission();
 
         if (inflateConfig == 1) {
-            /*Intent lockscreenService = new Intent(this, LockScreenMemontumService.class);
-            startService(lockscreenService);*/
-           Intent lockscreenActivity = new Intent(this, LockScreenMomentumActivity.class);
-           startActivity(lockscreenActivity);
+            Intent lockscreenService = new Intent(this, LockScreenMemontumService.class);
+            startService(lockscreenService);
+           /*Intent lockscreenActivity = new Intent(this, LockScreenMomentumActivity.class);
+           startActivity(lockscreenActivity);*/
         } else if (inflateConfig == 0){
             Snackbar.make(findViewById(R.id.relay),"Inflater on Lockscreen is Off",Snackbar.LENGTH_SHORT).setAction("action",null).show();
         } else {
