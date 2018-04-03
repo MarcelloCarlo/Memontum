@@ -17,7 +17,7 @@ public class LockScreenMemoKetchupSaver extends Activity {
 
         @Override
         public void onReceive(Context uhnnn, Intent yeahhhh) {
-            String title = yeahhhh.getStringExtra()
+            String title = yeahhhh.getStringExtra("Title");
         }
     }
 }
