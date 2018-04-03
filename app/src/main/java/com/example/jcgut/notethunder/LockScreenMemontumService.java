@@ -1,5 +1,6 @@
 package com.example.jcgut.notethunder;
 
+import android.app.IntentService;
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -7,6 +8,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.PixelFormat;
 import android.net.Uri;
+import android.os.Bundle;
 import android.os.IBinder;
 import android.provider.MediaStore;
 import android.support.design.widget.Snackbar;
@@ -53,6 +55,7 @@ public class LockScreenMemontumService extends Service {
     String content="";
     String date="";
 
+    final static String SEND_MEMO = "SEND_MEMO";
     @Override
     public IBinder onBind(Intent intent) {
         // Not used
@@ -104,8 +107,8 @@ public class LockScreenMemontumService extends Service {
                     break;
                 case R.id.btnSave:
                     try {
-                        detailInterface.saveToList(makeMemo());
-                    } catch (SQLException x){
+                        makeMemo();
+                    } catch(Exception x) {
                         x.printStackTrace();
                     }
                     break;
@@ -160,13 +163,18 @@ public class LockScreenMemontumService extends Service {
         }
     }*/
 
-    private Memo makeMemo() {
-        Memo memo = new Memo();
+    public void makeMemo() {
+        /*Memo memo = new Memo();
         memo.setImg(String.valueOf(fileUri));
         memo.setTitle(txtTitle.getText().toString());
         memo.setMemo(txtContext.getText().toString());
-        memo.setDate(new Date(System.currentTimeMillis()));
-        return memo;
+        memo.setDate(new Date(System.currentTimeMillis()));*/
+        Intent intentMemo = new Intent(this,LockScreenMemoKetchupSaver.class);
+        intentMemo.setAction(SEND_MEMO);
+        intentMemo.putExtra("Title",txtTitle.getText().toString());
+        intentMemo.putExtra("Memo",txtContext.getText().toString());
+        sendBroadcast(intentMemo);
+        /*return memo;*/
     }
 
     BroadcastReceiver screenReceiver = new BroadcastReceiver() {
