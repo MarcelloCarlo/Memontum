@@ -14,6 +14,9 @@ import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -30,9 +33,12 @@ import com.bumptech.glide.Glide;
 import com.example.jcgut.notethunder.cutomEdittext.LinedEdittext;
 import com.example.jcgut.notethunder.domain.Memo;
 import com.example.jcgut.notethunder.interfaces.DetailInterface;
+import com.example.jcgut.notethunder.interfaces.ListInterface;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 import static android.app.Activity.RESULT_OK;
@@ -45,18 +51,16 @@ public class LockScreenMemontumService extends Service {
     private LinearLayout linearLayout;
     private WindowManager.LayoutParams layoutParams;
     private WindowManager windowManager;
-    FloatingActionButton btnCancel,btnSave;
-    EditText txtTitle;
-    LinedEdittext txtContext;
-    int id = 0;
-    Uri fileUri = null;
-    DetailInterface detailInterface = null;
-    ImageView imgThumb;
-    String title ="";
-    String content="";
-    String date="";
+    FloatingActionButton btnCancel;
+    RecyclerView recyclerView;
+    ListAdapter listAdapter;
+    Context ctx;
+    int mColumnCount = 1;
+    List<Memo> data = new ArrayList<>();
+    View view;
+    LayoutInflater li;
+    ListInterface listMemoIntr;
 
-    final static String SEND_MEMO = "SEND_MEMO";
     @Override
     public IBinder onBind(Intent intent) {
         // Not used
@@ -68,6 +72,7 @@ public class LockScreenMemontumService extends Service {
         super.onCreate();
         IntentFilter intentFilter = new IntentFilter(Intent.ACTION_SCREEN_OFF);
         registerReceiver(screenReceiver, intentFilter);
+        li = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
         windowManager = ((WindowManager) getSystemService(WINDOW_SERVICE));
         layoutParams = new WindowManager.LayoutParams(
                 WindowManager.LayoutParams.MATCH_PARENT,
@@ -78,37 +83,35 @@ public class LockScreenMemontumService extends Service {
                         | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD
                         | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION, //hiding the home screen button
                 PixelFormat.TRANSPARENT);
+        this.listMemoIntr = (ListInterface)ctx;
     }
 
     private void init() {
         linearLayout = new LinearLayout(this);
-        windowManager.addView(linearLayout, layoutParams);
-        ((LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE)).inflate(R.layout.lockscreen_layout, linearLayout);
-        btnCancel = linearLayout.findViewById(R.id.btnCancelScreen);
-        btnCancel.setOnClickListener(listener);
-       /* btnSave = linearLayout.findViewById(R.id.btnSave);
-        btnSave.setOnClickListener(listener);
-        txtTitle = linearLayout.findViewById(R.id.editTitle);
-        txtContext = linearLayout.findViewById(R.id.editContent);*/
 
+        recyclerView = view.findViewById(R.id.memorecyclerView);
+        if (mColumnCount <= 1) {
+            recyclerView.setLayoutManager(new LinearLayoutManager(ctx));
+        } else {
+            recyclerView.setLayoutManager(new GridLayoutManager(ctx,mColumnCount));
+        }
+        listAdapter = new ListAdapter(ctx, data);
+        recyclerView.setAdapter(listAdapter);
+        view = li.inflate(R.layout.lockscreen_layout, linearLayout);
+        btnCancel = view.findViewById(R.id.btnCancelScreen);
+        btnCancel.setOnClickListener(listener);
+
+        windowManager.addView(view, layoutParams);
 
     }
     View.OnClickListener listener = new View.OnClickListener() {
         public void onClick(View view) {
-            Intent i = null;
             switch (view.getId()){
 
                 case R.id.btnCancelScreen:
                     windowManager.removeView(linearLayout);
                     linearLayout = null;
                     break;
-               /* case R.id.btnSave:
-                    try {
-                        makeMemo();
-                    } catch(Exception x) {
-                        x.printStackTrace();
-                    }
-                    break;*/
                 default:
                     break;
             }
@@ -117,44 +120,15 @@ public class LockScreenMemontumService extends Service {
 
     };
 
+    public void setData(List<Memo> MemoData){
+        this.data = MemoData;
+    }
+
     @Override
     public void onDestroy() {
         unregisterReceiver(screenReceiver);
         super.onDestroy();
     }
-
-   // @Override
-    /*public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode) {
-            case REQ_CAMERA :
-                if(resultCode==RESULT_OK) {
-                    fileUri = data.getData();
-                    if(fileUri!=null) {
-                        Glide.with(this).load(fileUri).into(imgThumb);
-                    }
-                }
-                break;
-            case REQ_GALLERY :
-                if(resultCode==RESULT_OK) {
-                    fileUri = data.getData();
-                    if(fileUri!=null) {
-                        Log.w("img", "change");
-                        Glide.with(this).load(fileUri).into(imgThumb);
-                    }
-                }
-                break;
-        }
-    }*/
-
-    /*public void makeMemo() {
-        *//*Memo memo = new Memo();
-        memo.setImg(String.valueOf(fileUri));
-        memo.setTitle(txtTitle.getText().toString());
-        memo.setMemo(txtContext.getText().toString());
-        memo.setDate(new Date(System.currentTimeMillis()));*//*
-        *//*return memo;*//*
-    }*/
 
     BroadcastReceiver screenReceiver = new BroadcastReceiver() {
         @Override

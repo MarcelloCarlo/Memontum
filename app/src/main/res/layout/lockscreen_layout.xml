@@ -5,12 +5,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:theme="@style/Theme.Design">
+    android:theme="@style/AppTheme">
     <android.support.v7.widget.RecyclerView
         android:id="@+id/memorecyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layoutManager="LinearLayoutManager"
         tools:context=".LockScreenMomentumService"
         tools:listitem="@layout/layout_list_item"
         android:clipToPadding="false"/>
