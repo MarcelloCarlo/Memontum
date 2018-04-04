@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.provider.MediaStore;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
@@ -44,7 +45,7 @@ public class LockScreenMemontumService extends Service {
     private LinearLayout linearLayout;
     private WindowManager.LayoutParams layoutParams;
     private WindowManager windowManager;
-    Button btnCancel,btnSave;
+    FloatingActionButton btnCancel,btnSave;
     EditText txtTitle;
     LinedEdittext txtContext;
     int id = 0;
@@ -83,12 +84,12 @@ public class LockScreenMemontumService extends Service {
         linearLayout = new LinearLayout(this);
         windowManager.addView(linearLayout, layoutParams);
         ((LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE)).inflate(R.layout.lockscreen_layout, linearLayout);
-        btnCancel = linearLayout.findViewById(R.id.btnCancel);
+        btnCancel = linearLayout.findViewById(R.id.btnCancelScreen);
         btnCancel.setOnClickListener(listener);
-        btnSave = linearLayout.findViewById(R.id.btnSave);
+       /* btnSave = linearLayout.findViewById(R.id.btnSave);
         btnSave.setOnClickListener(listener);
         txtTitle = linearLayout.findViewById(R.id.editTitle);
-        txtContext = linearLayout.findViewById(R.id.editContent);
+        txtContext = linearLayout.findViewById(R.id.editContent);*/
 
 
     }
@@ -97,17 +98,17 @@ public class LockScreenMemontumService extends Service {
             Intent i = null;
             switch (view.getId()){
 
-                case R.id.btnCancel:
+                case R.id.btnCancelScreen:
                     windowManager.removeView(linearLayout);
                     linearLayout = null;
                     break;
-                case R.id.btnSave:
+               /* case R.id.btnSave:
                     try {
                         makeMemo();
                     } catch(Exception x) {
                         x.printStackTrace();
                     }
-                    break;
+                    break;*/
                 default:
                     break;
             }
@@ -146,19 +147,14 @@ public class LockScreenMemontumService extends Service {
         }
     }*/
 
-    public void makeMemo() {
-        /*Memo memo = new Memo();
+    /*public void makeMemo() {
+        *//*Memo memo = new Memo();
         memo.setImg(String.valueOf(fileUri));
         memo.setTitle(txtTitle.getText().toString());
         memo.setMemo(txtContext.getText().toString());
-        memo.setDate(new Date(System.currentTimeMillis()));*/
-        Intent intentMemo = new Intent(this,LockScreenMemoKetchupSaver.class);
-        intentMemo.setAction(SEND_MEMO);
-        intentMemo.putExtra("Title",txtTitle.getText().toString());
-        intentMemo.putExtra("Memo",txtContext.getText().toString());
-        sendBroadcast(intentMemo);
-        /*return memo;*/
-    }
+        memo.setDate(new Date(System.currentTimeMillis()));*//*
+        *//*return memo;*//*
+    }*/
 
     BroadcastReceiver screenReceiver = new BroadcastReceiver() {
         @Override

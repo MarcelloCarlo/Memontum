@@ -13,7 +13,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import com.example.jcgut.notethunder.domain.Memo;
 import com.example.jcgut.notethunder.interfaces.ListInterface;
@@ -36,7 +35,7 @@ public class ListFragment extends Fragment {
     boolean state = true;
     int btnCond = 1;
 
-    private List<Memo> datas = new ArrayList<>();
+    private List<Memo> data = new ArrayList<>();
 
     ListInterface listInterface = null;
 
@@ -69,13 +68,13 @@ public class ListFragment extends Fragment {
         if(view==null) view = inflater.inflate(R.layout.layout_list, container, false);
 
         context = getContext();
-        recyclerView = (RecyclerView)view.findViewById(R.id.recyclerView);
+        recyclerView = view.findViewById(R.id.recyclerView);
         if (mColumnCount <= 1) {
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
         } else {
             recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
         }
-        listAdapter = new ListAdapter(context, datas);
+        listAdapter = new ListAdapter(context, data);
         recyclerView.setAdapter(listAdapter);
 
         setBtnListener();
@@ -101,7 +100,7 @@ public class ListFragment extends Fragment {
     }
 
     public void setData(List<Memo> datas) {
-        this.datas = datas;
+        this.data = datas;
     }
 
     private void setBtnListener() {
@@ -157,7 +156,7 @@ public class ListFragment extends Fragment {
 
     private void setMultiSelectMode(boolean state) {
         if(state==true) {
-            listAdapter = new ListAdapter(context, datas, false);
+            listAdapter = new ListAdapter(context, data, false);
             recyclerView.setAdapter(listAdapter);
             //btnSelect.setText(R.string.back);
             btnSelect.setImageDrawable(ContextCompat.getDrawable(getContext(),R.drawable.ic_arrow_back_black_24dp));
@@ -168,7 +167,7 @@ public class ListFragment extends Fragment {
             btnCond = 0;
 
         } else {
-            listAdapter = new ListAdapter(context, datas, true);
+            listAdapter = new ListAdapter(context, data, true);
             recyclerView.setAdapter(listAdapter);
             //btnSelect.setText(R.string.edit);
             //btnPlus.setText("+");
@@ -182,7 +181,7 @@ public class ListFragment extends Fragment {
     }
 
     public void refresh() {
-        listAdapter = new ListAdapter(context, datas);
+        listAdapter = new ListAdapter(context, data);
         recyclerView.setAdapter(listAdapter);
         listAdapter.notifyDataSetChanged();
     }

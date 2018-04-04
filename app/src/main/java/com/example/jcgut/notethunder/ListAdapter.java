@@ -20,20 +20,20 @@ import java.util.List;
 
 public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
 
-    private List<Memo> datas;
+    private List<Memo> data;
     Context context;
     ListInterface listInterface = null;
     boolean state = true;
 
-    public ListAdapter(Context context, List<Memo> datas) {
+    public ListAdapter(Context context, List<Memo> data) {
         this.context = context;
-        this.datas = datas;
+        this.data = data;
         listInterface = (ListInterface)context;
     }
 
-    public ListAdapter(Context context, List<Memo> datas, boolean state) {
+    public ListAdapter(Context context, List<Memo> data, boolean state) {
         this.context = context;
-        this.datas = datas;
+        this.data = data;
         listInterface = (ListInterface)context;
         this.state = state;
     }
@@ -47,7 +47,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        final Memo memo = datas.get(position);
+        final Memo memo = data.get(position);
         if(state==true) {
             Glide.with(context).load(memo.getImg()).placeholder(R.drawable.ic_image_black_24dp).into(holder.imgThumb);
             holder.txtTitle.setText(memo.getTitle());
@@ -94,7 +94,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
 
     @Override
     public int getItemCount() {
-        return datas.size();
+        return data.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -106,11 +106,11 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
 
         public ViewHolder(View itemView) {
             super(itemView);
-            mCheckBox = (CheckBox)itemView.findViewById(R.id.checkbox);
-            card = (CardView)itemView.findViewById(R.id.cardView);
-            imgThumb = (ImageView)itemView.findViewById(R.id.thumbnail);
-            txtTitle = (TextView)itemView.findViewById(R.id.tvTitle);
-            txtContents = (TextView)itemView.findViewById(R.id.tvContent);
+            mCheckBox = itemView.findViewById(R.id.checkbox);
+            card = itemView.findViewById(R.id.cardView);
+            imgThumb = itemView.findViewById(R.id.thumbnail);
+            txtTitle = itemView.findViewById(R.id.tvTitle);
+            txtContents = itemView.findViewById(R.id.tvContent);
         }
     }
 

@@ -34,7 +34,7 @@ import static com.example.jcgut.notethunder.MainActivity.REQ_GALLERY;
 public class DetailFragment extends Fragment {
 
     public ImageView imgThumb;
-    Button btnSave, btnCancel, btnDelete;
+    Button btnSave, btnCancel/*, btnDelete*/;
     Button btnCamera, btnGallery;
     public EditText editTitle, editContent;
 
@@ -68,27 +68,27 @@ public class DetailFragment extends Fragment {
         // Inflate the layout for this fragment
         if(view==null) {
             view =inflater.inflate(R.layout.fragment_detail, container, false);
-            imgThumb = (ImageView)view.findViewById(R.id.getImg);
-            editTitle = (EditText)view.findViewById(R.id.editTitle);
-            editContent = (EditText)view.findViewById(R.id.editContent);
-            btnSave = (Button)view.findViewById(R.id.btnSave);
-            btnCancel = (Button)view.findViewById(R.id.btnCancel);
-            btnDelete = (Button)view.findViewById(R.id.btnDelete);
-            btnCamera = (Button)view.findViewById(R.id.btnCamera);
-            btnGallery = (Button)view.findViewById(R.id.btnGallery);
+            imgThumb = view.findViewById(R.id.getImg);
+            editTitle = view.findViewById(R.id.editTitle);
+            editContent = view.findViewById(R.id.editContent);
+            btnSave = view.findViewById(R.id.btnSave);
+            btnCancel = view.findViewById(R.id.btnCancel);
+           /* btnDelete = (Button)view.findViewById(R.id.btnDelete);*/
+            btnCamera = view.findViewById(R.id.btnCamera);
+            btnGallery = view.findViewById(R.id.btnGallery);
 
             editTitle.setText("");
             editContent.setText("");
 
             btnSave.setOnClickListener(listener);
             btnCancel.setOnClickListener(listener);
-            btnDelete.setOnClickListener(listener);
+           /* btnDelete.setOnClickListener(listener);*/
             btnCamera.setOnClickListener(listener);
             btnGallery.setOnClickListener(listener);
         }
         if (getArguments() != null) {
             btnSave.setText("UPDATE");
-            btnDelete.setVisibility(View.VISIBLE);
+           /* btnDelete.setVisibility(View.VISIBLE);*/
             id = getArguments().getInt("id");
             fileUri = Uri.parse(new String(getArguments().getString("img")));
             title = new String(getArguments().getString("title"));
@@ -140,13 +140,13 @@ public class DetailFragment extends Fragment {
                 case R.id.btnCancel :
                     detailInterface.backToList();
                     break;
-                case R.id.btnDelete :
+               /* case R.id.btnDelete :
                     try {
                         detailInterface.delete(id);
                     } catch (SQLException e) {
                         e.printStackTrace();
                     }
-                    break;
+                    break;*/
                 case R.id.btnCamera :
                     title = editTitle.getText().toString();
                     content = editContent.getText().toString();

@@ -40,7 +40,6 @@
             android:name=".LockScreenMomentumActivity"
             android:showOnLockScreen="true"
             android:windowSoftInputMode="adjustPan" />
-        <activity android:name=".LockScreenMemoKetchupSaver"/>
 
         <service
             android:name=".LockScreenMemontumService"
@@ -52,8 +51,6 @@
                 <action android:name="android.intent.action.QUICKBOOT_POWERON" />
             </intent-filter>
         </receiver>
-
-        <activity android:name=".LockScreenMemoKetchupSaver"></activity>
     </application>
 
 </manifest>
