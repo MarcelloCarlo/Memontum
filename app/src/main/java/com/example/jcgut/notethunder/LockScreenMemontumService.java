@@ -44,7 +44,7 @@ public class LockScreenMemontumService extends Service {
     private LinearLayout linearLayout;
     private WindowManager.LayoutParams layoutParams;
     private WindowManager windowManager;
-    Button btnCancel,btnSave,btnCamera,btnGallery;
+    Button btnCancel,btnSave;
     EditText txtTitle;
     LinedEdittext txtContext;
     int id = 0;
@@ -82,15 +82,11 @@ public class LockScreenMemontumService extends Service {
     private void init() {
         linearLayout = new LinearLayout(this);
         windowManager.addView(linearLayout, layoutParams);
-        ((LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE)).inflate(R.layout.fragment_detail, linearLayout);
+        ((LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE)).inflate(R.layout.lockscreen_layout, linearLayout);
         btnCancel = linearLayout.findViewById(R.id.btnCancel);
         btnCancel.setOnClickListener(listener);
         btnSave = linearLayout.findViewById(R.id.btnSave);
         btnSave.setOnClickListener(listener);
-        btnCamera = linearLayout.findViewById(R.id.btnCamera);
-        btnCamera.setOnClickListener(listener);
-        btnGallery = linearLayout.findViewById(R.id.btnGallery);
-        btnGallery.setOnClickListener(listener);
         txtTitle = linearLayout.findViewById(R.id.editTitle);
         txtContext = linearLayout.findViewById(R.id.editContent);
 
@@ -111,19 +107,6 @@ public class LockScreenMemontumService extends Service {
                     } catch(Exception x) {
                         x.printStackTrace();
                     }
-                    break;
-                case R.id.btnCamera :
-                    title = txtTitle.getText().toString();
-                    content = txtContext.getText().toString();
-                    i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    //startActivityForResult(i, REQ_CAMERA);
-                    break;
-                case R.id.btnGallery :
-                    title = txtTitle.getText().toString();
-                    content = txtContext.getText().toString();
-                    i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                    i.setType("image/*");
-                    //startActivityForResult( Intent.createChooser(i,"Select Picture") , REQ_GALLERY);
                     break;
                 default:
                     break;
