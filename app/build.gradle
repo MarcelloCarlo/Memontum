@@ -28,7 +28,7 @@ dependencies {
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     implementation 'com.android.support:design:27.1.0'
     implementation 'com.android.support:palette-v7:27.1.0'
-    implementation'com.j256.ormlite:ormlite-core:5.0'
+    implementation 'com.j256.ormlite:ormlite-core:5.0'
     implementation 'com.j256.ormlite:ormlite-android:5.0'
     implementation 'com.github.bumptech.glide:glide:3.7.0'
     implementation 'com.davidecirillo.multichoicerecyclerview:multichoicerecyclerview:1.0.1'

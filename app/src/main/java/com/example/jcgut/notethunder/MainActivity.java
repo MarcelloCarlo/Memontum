@@ -65,6 +65,7 @@ public class MainActivity extends AppCompatActivity implements ListInterface, De
 
         if (inflateConfig == 1) {
             Intent lockscreenService = new Intent(this, LockScreenMemontumService.class);
+            
             startService(lockscreenService);
            /*Intent lockscreenActivity = new Intent(this, LockScreenMomentumActivity.class);
            startActivity(lockscreenActivity);*/

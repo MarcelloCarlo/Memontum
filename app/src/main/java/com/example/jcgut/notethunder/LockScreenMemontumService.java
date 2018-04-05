@@ -22,6 +22,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -31,9 +32,11 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.jcgut.notethunder.cutomEdittext.LinedEdittext;
+import com.example.jcgut.notethunder.data.DBHelper;
 import com.example.jcgut.notethunder.domain.Memo;
 import com.example.jcgut.notethunder.interfaces.DetailInterface;
 import com.example.jcgut.notethunder.interfaces.ListInterface;
+import com.j256.ormlite.dao.Dao;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -55,8 +58,8 @@ public class LockScreenMemontumService extends Service {
     RecyclerView recyclerView;
     ListAdapter listAdapter;
     Context ctx;
-    int mColumnCount = 1;
     List<Memo> data = new ArrayList<>();
+    List<Memo> arrayMemo;
     View view;
     LayoutInflater li;
     ListInterface listMemoIntr;
@@ -78,32 +81,38 @@ public class LockScreenMemontumService extends Service {
                 WindowManager.LayoutParams.MATCH_PARENT,
                 WindowManager.LayoutParams.MATCH_PARENT,
                 WindowManager.LayoutParams.TYPE_SYSTEM_ERROR,
-                //WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN //draw on status bar
                 WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN
                         | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD
                         | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION, //hiding the home screen button
                 PixelFormat.TRANSPARENT);
-        this.listMemoIntr = (ListInterface)ctx;
+
+      /*  DBHelper mdbHelper = new DBHelper(getApplicationContext());
+        Dao<Memo, Long> memoDao = null;
+        try {
+            memoDao = mdbHelper.getMemoDao();
+            arrayMemo = memoDao.queryForAll();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }*/
     }
+
 
     private void init() {
         linearLayout = new LinearLayout(this);
-
-        recyclerView = view.findViewById(R.id.memorecyclerView);
-        if (mColumnCount <= 1) {
-            recyclerView.setLayoutManager(new LinearLayoutManager(ctx));
-        } else {
-            recyclerView.setLayoutManager(new GridLayoutManager(ctx,mColumnCount));
-        }
-        listAdapter = new ListAdapter(ctx, data);
-        recyclerView.setAdapter(listAdapter);
+        windowManager.addView(linearLayout, layoutParams);
         view = li.inflate(R.layout.lockscreen_layout, linearLayout);
+        recyclerView = view.findViewById(R.id.memorecyclerView);
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        listAdapter = new ListAdapter(this,data);
+        recyclerView.setAdapter(listAdapter);
+
         btnCancel = view.findViewById(R.id.btnCancelScreen);
         btnCancel.setOnClickListener(listener);
 
-        windowManager.addView(view, layoutParams);
-
     }
+
     View.OnClickListener listener = new View.OnClickListener() {
         public void onClick(View view) {
             switch (view.getId()){
@@ -120,10 +129,9 @@ public class LockScreenMemontumService extends Service {
 
     };
 
-    public void setData(List<Memo> MemoData){
-        this.data = MemoData;
+    public void setLockedData(List<Memo> datas) {
+        this.data = datas;
     }
-
     @Override
     public void onDestroy() {
         unregisterReceiver(screenReceiver);

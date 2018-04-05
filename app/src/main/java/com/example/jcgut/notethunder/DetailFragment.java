@@ -16,8 +16,10 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.example.jcgut.notethunder.data.DBHelper;
 import com.example.jcgut.notethunder.domain.Memo;
 import com.example.jcgut.notethunder.interfaces.DetailInterface;
+import com.j256.ormlite.dao.Dao;
 
 import java.sql.SQLException;
 import java.util.Date;
@@ -97,6 +99,7 @@ public class DetailFragment extends Fragment {
         }
 
         return view;
+        
     }
 
     @Override
