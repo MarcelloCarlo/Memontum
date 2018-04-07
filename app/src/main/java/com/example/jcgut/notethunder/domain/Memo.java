@@ -59,9 +59,6 @@ public class Memo {
         this.title = title;
     }
 
-    public Memo() {
-
-    }
 
     public Memo(String memo, Date date) {
         setMemo(memo);

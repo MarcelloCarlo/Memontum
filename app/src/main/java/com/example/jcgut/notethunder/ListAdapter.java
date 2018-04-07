@@ -31,11 +31,6 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
         listInterface = (ListInterface)context;
     }
 
-    public ListAdapter( List<Memo> data) {
-        this.data = data;
-        listInterface = (ListInterface)context;
-    }
-
     public ListAdapter(Context context, List<Memo> data, boolean state) {
         this.context = context;
         this.data = data;

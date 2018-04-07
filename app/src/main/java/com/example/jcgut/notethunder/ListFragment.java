@@ -15,6 +15,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import com.example.jcgut.notethunder.domain.Memo;
 import com.example.jcgut.notethunder.interfaces.ListInterface;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +39,7 @@ public class ListFragment extends Fragment {
     int btnCond = 1;
 
     private List<Memo> data = new ArrayList<>();
+    private  List<Memo> memoContent;
 
     ListInterface listInterface = null;
 
@@ -64,6 +70,7 @@ public class ListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        EventBus.getDefault().register(this);
         if(view==null) view = inflater.inflate(R.layout.layout_list, container, false);
 
         context = getContext();
@@ -80,6 +87,15 @@ public class ListFragment extends Fragment {
 
         return view;
     }
+
+    /*@Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(Memo memo){
+
+        memoContent.add(cx);
+        listAdapter.notifyDataSetChanged();
+    }*/
+
+
 
     @Override
     public void onResume() {

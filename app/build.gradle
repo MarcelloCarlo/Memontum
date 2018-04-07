@@ -32,6 +32,7 @@ dependencies {
     implementation 'com.j256.ormlite:ormlite-android:5.0'
     implementation 'com.github.bumptech.glide:glide:3.7.0'
     implementation 'com.davidecirillo.multichoicerecyclerview:multichoicerecyclerview:1.0.1'
+    implementation 'org.greenrobot:eventbus:3.0.0'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'

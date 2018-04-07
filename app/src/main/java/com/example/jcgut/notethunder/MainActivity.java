@@ -28,6 +28,7 @@ import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.dao.Dao;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -43,7 +44,6 @@ public class MainActivity extends AppCompatActivity implements ListInterface, De
     FrameLayout main;
 
     FragmentManager fm;
-
     List<Memo> datas;
     Dao<Memo, Long> memoDao;
     View mainView;
@@ -65,7 +65,8 @@ public class MainActivity extends AppCompatActivity implements ListInterface, De
 
         if (inflateConfig == 1) {
             Intent lockscreenService = new Intent(this, LockScreenMemontumService.class);
-            
+             //   lockscreenService.putExtra("Memhoes",new MemoWrapper(datas));
+//            lockscreenService.putExtra("memos",new MemoWrapper(data));
             startService(lockscreenService);
            /*Intent lockscreenActivity = new Intent(this, LockScreenMomentumActivity.class);
            startActivity(lockscreenActivity);*/
@@ -121,8 +122,8 @@ public class MainActivity extends AppCompatActivity implements ListInterface, De
         }
         if (id == R.id.action_inflate) {
             Snackbar.make(findViewById(R.id.relay), "C'mon Teletubby, Teleport us to Mars! ", Snackbar.LENGTH_LONG).setAction("Action", null).show();
-            Intent lockscreenActivity = new Intent(this, LockScreenMomentumActivity.class);
-            startActivity(lockscreenActivity);
+          /*  Intent lockscreenActivity = new Intent(this, LockScreenMomentumActivity.class);
+            startActivity(lockscreenActivity);*/
         }
         return super.onOptionsItemSelected(item);
     }
@@ -223,7 +224,7 @@ public class MainActivity extends AppCompatActivity implements ListInterface, De
     private void setFragment() {
         list = ListFragment.newInstance(1);
         detail = DetailFragment.newInstance();
-        main = (FrameLayout)findViewById(R.id.activity_main);
+        main = findViewById(R.id.activity_main);
     }
 
     private void checkPermission() {

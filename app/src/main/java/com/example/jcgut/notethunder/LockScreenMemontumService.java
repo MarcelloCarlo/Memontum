@@ -63,13 +63,20 @@ public class LockScreenMemontumService extends Service {
     View view;
     LayoutInflater li;
     ListInterface listMemoIntr;
+    MemoWrapper memoWrapper;
 
     @Override
     public IBinder onBind(Intent intent) {
         // Not used
         return null;
     }
+    /*@Override
+    public int onStartCommand(Intent intent, int flags, int startid){
+        super.onStartCommand(intent,flags,startid);
+        memoWrapper = intent.getSerializableExtra("Memhoes");
 
+    }
+*/
     @Override
     public void onCreate() {
         super.onCreate();
@@ -97,16 +104,18 @@ public class LockScreenMemontumService extends Service {
     }
 
 
-    private void init() {
+    private void init(Context ctx) {
         linearLayout = new LinearLayout(this);
         windowManager.addView(linearLayout, layoutParams);
         view = li.inflate(R.layout.lockscreen_layout, linearLayout);
+        this.ctx = ctx;
         recyclerView = view.findViewById(R.id.memorecyclerView);
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setLayoutManager(new LinearLayoutManager(ctx));
+        try {
+            recyclerView.setAdapter(new ListAdapter(getApplicationContext(),arrayMemo));
+        }catch (Exception x) {x.printStackTrace();}
 
-        listAdapter = new ListAdapter(this,data);
-        recyclerView.setAdapter(listAdapter);
 
         btnCancel = view.findViewById(R.id.btnCancelScreen);
         btnCancel.setOnClickListener(listener);
@@ -139,10 +148,12 @@ public class LockScreenMemontumService extends Service {
     }
 
     BroadcastReceiver screenReceiver = new BroadcastReceiver() {
+
         @Override
         public void onReceive(Context context, Intent intent) {
             if (intent.getAction().equals(Intent.ACTION_SCREEN_OFF) && linearLayout == null) {
-                init();
+                init(context);
+
             }
         }
     };

@@ -1,6 +1,8 @@
 package com.example.jcgut.notethunder;
 
 import android.app.Activity;
+import android.app.IntentService;
+import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -10,110 +12,112 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.provider.MediaStore;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.jcgut.notethunder.cutomEdittext.LinedEdittext;
+import com.example.jcgut.notethunder.data.DBHelper;
 import com.example.jcgut.notethunder.domain.Memo;
 import com.example.jcgut.notethunder.interfaces.DetailInterface;
+import com.example.jcgut.notethunder.interfaces.ListInterface;
+import com.j256.ormlite.dao.Dao;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Objects;
 
+import static android.app.Activity.RESULT_OK;
 import static android.support.v4.app.ActivityCompat.startActivityForResult;
 import static com.example.jcgut.notethunder.MainActivity.REQ_CAMERA;
 import static com.example.jcgut.notethunder.MainActivity.REQ_GALLERY;
 
-/**
- * Created by jcgut on 3/8/2018.
- * Modified : 3/8/2018
- */
-
-public class LockScreenMomentumActivity extends Activity {
+public class LockScreenMemontumActivity extends Activity {
 
     private LinearLayout linearLayout;
     private WindowManager.LayoutParams layoutParams;
     private WindowManager windowManager;
-    Button btnCancel,btnSave,btnCamera,btnGallery;
-    EditText txtTitle,txtContext;
-    int id = 0;
-    Uri fileUri = null;
-    DetailInterface detailInterface = null;
-    ImageView imgThumb;
-    String title ="";
-    String content="";
-    String date="";
+    FloatingActionButton btnCancel;
+    RecyclerView recyclerView;
+    ListAdapter listAdapter;
+    Context ctx;
+    List<Memo> data = new ArrayList<>();
+    List<Memo> arrayMemo;
+    View view;
+    LayoutInflater li;
+    ListInterface listMemoIntr;
+    MemoWrapper memoWrapper;
 
     @Override
-    public void onCreate(Bundle savedInstance) {
-        setContentView(R.layout.activity_splash_screen);
-        super.onCreate(savedInstance);
+    public void onCreateView() {
+        super.onCreate();
         IntentFilter intentFilter = new IntentFilter(Intent.ACTION_SCREEN_OFF);
         registerReceiver(screenReceiver, intentFilter);
+        li = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
         windowManager = ((WindowManager) getSystemService(WINDOW_SERVICE));
         layoutParams = new WindowManager.LayoutParams(
                 WindowManager.LayoutParams.MATCH_PARENT,
                 WindowManager.LayoutParams.MATCH_PARENT,
                 WindowManager.LayoutParams.TYPE_SYSTEM_ERROR,
-                //WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN //draw on status bar
-                WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
-                        | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD | WindowManager.LayoutParams.FLAG_FULLSCREEN /*| WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
-                | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON*/ | WindowManager.LayoutParams.FLAG_FULLSCREEN
+                WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN
+                        | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD
                         | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION, //hiding the home screen button
                 PixelFormat.TRANSPARENT);
+
+      /*  DBHelper mdbHelper = new DBHelper(getApplicationContext());
+        Dao<Memo, Long> memoDao = null;
+        try {
+            memoDao = mdbHelper.getMemoDao();
+            arrayMemo = memoDao.queryForAll();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }*/
     }
 
-    private void init() {
+
+    private void init(Context ctx) {
         linearLayout = new LinearLayout(this);
         windowManager.addView(linearLayout, layoutParams);
-        ((LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE)).inflate(R.layout.fragment_detail, linearLayout);
-        btnCancel = linearLayout.findViewById(R.id.btnCancel);
-        btnCancel.setOnClickListener(listener);
-        btnSave = linearLayout.findViewById(R.id.btnSave);
-        btnSave.setOnClickListener(listener);
-        btnCamera = linearLayout.findViewById(R.id.btnCamera);
-        btnCamera.setOnClickListener(listener);
-        btnGallery = linearLayout.findViewById(R.id.btnGallery);
-        btnGallery.setOnClickListener(listener);
-        txtTitle = linearLayout.findViewById(R.id.editTitle);
-        txtContext = linearLayout.findViewById(R.id.editContent);
+        view = li.inflate(R.layout.lockscreen_layout, linearLayout);
+        this.ctx = ctx;
+        recyclerView = view.findViewById(R.id.memorecyclerView);
 
+        recyclerView.setLayoutManager(new LinearLayoutManager(ctx));
+        try {
+            recyclerView.setAdapter(new ListAdapter(getApplicationContext(),arrayMemo));
+        }catch (Exception x) {x.printStackTrace();}
+
+
+        btnCancel = view.findViewById(R.id.btnCancelScreen);
+        btnCancel.setOnClickListener(listener);
 
     }
+
     View.OnClickListener listener = new View.OnClickListener() {
         public void onClick(View view) {
-            Intent i = null;
             switch (view.getId()){
 
-                case R.id.btnCancel:
+                case R.id.btnCancelScreen:
                     windowManager.removeView(linearLayout);
                     linearLayout = null;
-                    break;
-                case R.id.btnSave:
-                    try {
-                        detailInterface.saveToList(makeMemo());
-                    } catch (SQLException x){
-                        x.printStackTrace();
-                    }
-                    break;
-                case R.id.btnCamera :
-                    title = txtTitle.getText().toString();
-                    content = txtContext.getText().toString();
-                    i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    startActivityForResult(i, REQ_CAMERA);
-                    break;
-                case R.id.btnGallery :
-                    title = txtTitle.getText().toString();
-                    content = txtContext.getText().toString();
-                    i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                    i.setType("image/*");
-                    startActivityForResult( Intent.createChooser(i,"Select Picture") , REQ_GALLERY);
                     break;
                 default:
                     break;
@@ -123,51 +127,25 @@ public class LockScreenMomentumActivity extends Activity {
 
     };
 
+    public void setLockedData(List<Memo> datas) {
+        this.data = datas;
+    }
     @Override
     public void onDestroy() {
         unregisterReceiver(screenReceiver);
         super.onDestroy();
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode) {
-            case REQ_CAMERA :
-                if(resultCode==RESULT_OK) {
-                    fileUri = data.getData();
-                    if(fileUri!=null) {
-                        Glide.with(this).load(fileUri).into(imgThumb);
-                    }
-                }
-                break;
-            case REQ_GALLERY :
-                if(resultCode==RESULT_OK) {
-                    fileUri = data.getData();
-                    if(fileUri!=null) {
-                        Log.w("img", "change");
-                        Glide.with(this).load(fileUri).into(imgThumb);
-                    }
-                }
-                break;
-        }
-    }
-
-    private Memo makeMemo() {
-        Memo memo = new Memo();
-        memo.setImg(String.valueOf(fileUri));
-        memo.setTitle(txtTitle.getText().toString());
-        memo.setMemo(txtContext.getText().toString());
-        memo.setDate(new Date(System.currentTimeMillis()));
-        return memo;
-    }
-
     BroadcastReceiver screenReceiver = new BroadcastReceiver() {
+
         @Override
         public void onReceive(Context context, Intent intent) {
             if (intent.getAction().equals(Intent.ACTION_SCREEN_OFF) && linearLayout == null) {
-                init();
+                init(context);
+
             }
         }
     };
+
+
 }
