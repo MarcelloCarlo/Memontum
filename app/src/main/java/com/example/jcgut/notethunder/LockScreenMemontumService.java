@@ -77,6 +77,7 @@ public class LockScreenMemontumService extends Service {
 
     }
 */
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -138,9 +139,6 @@ public class LockScreenMemontumService extends Service {
 
     };
 
-    public void setLockedData(List<Memo> datas) {
-        this.data = datas;
-    }
     @Override
     public void onDestroy() {
         unregisterReceiver(screenReceiver);

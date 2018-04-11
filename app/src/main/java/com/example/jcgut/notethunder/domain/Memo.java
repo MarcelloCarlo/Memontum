@@ -23,6 +23,7 @@ public class Memo {
     @DatabaseField
     private Date date;
 
+
     public Date getDate() {
         return date;
     }
@@ -59,6 +60,9 @@ public class Memo {
         this.title = title;
     }
 
+    public Memo() {
+
+    }
 
     public Memo(String memo, Date date) {
         setMemo(memo);
