@@ -56,28 +56,18 @@ public class LockScreenMemontumService extends Service {
     private WindowManager windowManager;
     FloatingActionButton btnCancel;
     RecyclerView recyclerView;
-    ListAdapter listAdapter;
     Context ctx;
     List<Memo> data = new ArrayList<>();
     List<Memo> arrayMemo;
     View view;
     LayoutInflater li;
-    ListInterface listMemoIntr;
-    MemoWrapper memoWrapper;
+    ListAdapter listAdapter;
 
     @Override
     public IBinder onBind(Intent intent) {
         // Not used
         return null;
     }
-    /*@Override
-    public int onStartCommand(Intent intent, int flags, int startid){
-        super.onStartCommand(intent,flags,startid);
-        memoWrapper = intent.getSerializableExtra("Memhoes");
-
-    }
-*/
-
     @Override
     public void onCreate() {
         super.onCreate();
@@ -93,15 +83,6 @@ public class LockScreenMemontumService extends Service {
                         | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD
                         | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION, //hiding the home screen button
                 PixelFormat.TRANSPARENT);
-
-      /*  DBHelper mdbHelper = new DBHelper(getApplicationContext());
-        Dao<Memo, Long> memoDao = null;
-        try {
-            memoDao = mdbHelper.getMemoDao();
-            arrayMemo = memoDao.queryForAll();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }*/
     }
 
 
@@ -114,9 +95,9 @@ public class LockScreenMemontumService extends Service {
 
         recyclerView.setLayoutManager(new LinearLayoutManager(ctx));
         try {
-            recyclerView.setAdapter(new ListAdapter(getApplicationContext(),arrayMemo));
+            listAdapter = new ListAdapter(ctx,data);
+            recyclerView.setAdapter(listAdapter);
         }catch (Exception x) {x.printStackTrace();}
-
 
         btnCancel = view.findViewById(R.id.btnCancelScreen);
         btnCancel.setOnClickListener(listener);

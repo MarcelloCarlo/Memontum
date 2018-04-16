@@ -64,6 +64,8 @@ public class MainActivity extends AppCompatActivity implements ListInterface, De
         checkPermission();
 
         if (inflateConfig == 1) {
+            Intent lockscreenService = new Intent(this, LockScreenMemontumService.class);
+            startService(lockscreenService);
             /*Intent lockscreenService = new Intent(this, LockScreenMemontumService.class);
              //   lockscreenService.putExtra("Memhoes",new MemoWrapper(datas));
 //            lockscreenService.putExtra("memos",new MemoWrapper(data));
