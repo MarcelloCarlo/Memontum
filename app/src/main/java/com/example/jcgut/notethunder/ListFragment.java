@@ -2,20 +2,21 @@ package com.example.jcgut.notethunder;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.jcgut.notethunder.domain.Memo;
 import com.example.jcgut.notethunder.interfaces.ListInterface;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -84,15 +85,6 @@ public class ListFragment extends Fragment {
         return view;
     }
 
-    /*@Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(Memo memo){
-
-        memoContent.add(cx);
-        listAdapter.notifyDataSetChanged();
-    }*/
-
-
-
     @Override
     public void onResume() {
         super.onResume();
@@ -123,10 +115,10 @@ public class ListFragment extends Fragment {
                     listInterface.goDetail();
                 } else {
                     AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                    builder.setTitle("Tanggalin");
+                    builder.setTitle("Remove");
                     builder.setMessage("\n" +
-                            "Sigurado ka bang gusto mong tanggalin ang lahat ng mga naka-check na tala?");
-                    builder.setCancelable(false).setPositiveButton("Oo", new DialogInterface.OnClickListener() {
+                            "Do you want to delete all of the selected items?");
+                    builder.setCancelable(false).setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             if(deleteList.size()!=0) {
@@ -141,7 +133,7 @@ public class ListFragment extends Fragment {
                             }
                             deleteList.clear();
                         }
-                    }).setNegativeButton("Kanselahin", new DialogInterface.OnClickListener() {
+                    }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             deleteList.clear();
@@ -170,9 +162,9 @@ public class ListFragment extends Fragment {
             listAdapter = new ListAdapter(context, data, false);
             recyclerView.setAdapter(listAdapter);
             //btnSelect.setText(R.string.back);
-            btnSelect.setImageDrawable(ContextCompat.getDrawable(getContext(),R.drawable.ic_arrow_back_black_24dp));
+            btnSelect.setImageDrawable(ContextCompat.getDrawable(getContext(),R.drawable.ic_keyboard_backspace_black_24dp));
             //btnPlus.setText("-");
-            btnPlus.setImageResource(R.drawable.ic_delete_black_24dp);
+            btnPlus.setImageResource(R.drawable.ic_delete_forever_black_24dp);
 
             this.state = false;
             btnCond = 0;
@@ -183,7 +175,7 @@ public class ListFragment extends Fragment {
             //btnSelect.setText(R.string.edit);
             //btnPlus.setText("+");
             btnSelect.setImageDrawable(ContextCompat.getDrawable(getContext(),R.drawable.ic_check_black_24dp));
-            btnPlus.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_edit_black_24dp));
+            btnPlus.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_add_black_24dp));
             deleteList.clear();
             this.state = true;
             refresh();

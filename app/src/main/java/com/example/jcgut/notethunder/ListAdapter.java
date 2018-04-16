@@ -1,8 +1,6 @@
 package com.example.jcgut.notethunder;
 
 import android.content.Context;
-import android.support.v7.widget.CardView;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +8,9 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.jcgut.notethunder.domain.Memo;
@@ -77,7 +78,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
                 public void onClick(View v) {
                     if(holder.mCheckBox.isChecked()) {
                         holder.mCheckBox.setChecked(false);
-                        ListFragment.deleteList.remove(ListFragment.deleteList.indexOf(memo.getId()));
+                        ListFragment.deleteList.remove((Integer) memo.getId());
                         Log.w("id", String.valueOf(memo.getId()));
                     } else {
                         holder.mCheckBox.setChecked(true);

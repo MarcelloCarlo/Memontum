@@ -5,10 +5,9 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
-import android.widget.EditText;
 
 
-public class LinedEdittext extends android.support.v7.widget.AppCompatEditText {
+public class LinedEdittext extends androidx.appcompat.widget.AppCompatEditText {
 
     private Paint mPaint = new Paint();
 

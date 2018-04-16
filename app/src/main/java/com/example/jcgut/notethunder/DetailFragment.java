@@ -1,12 +1,16 @@
 package com.example.jcgut.notethunder;
 
 
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,16 +19,19 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import androidx.annotation.RequiresApi;
+import androidx.core.app.NotificationCompat;
+import androidx.fragment.app.Fragment;
+
 import com.bumptech.glide.Glide;
-import com.example.jcgut.notethunder.data.DBHelper;
 import com.example.jcgut.notethunder.domain.Memo;
 import com.example.jcgut.notethunder.interfaces.DetailInterface;
-import com.j256.ormlite.dao.Dao;
 
 import java.sql.SQLException;
 import java.util.Date;
 
 import static android.app.Activity.RESULT_OK;
+import static android.content.Context.NOTIFICATION_SERVICE;
 import static com.example.jcgut.notethunder.MainActivity.REQ_CAMERA;
 import static com.example.jcgut.notethunder.MainActivity.REQ_GALLERY;
 
@@ -36,7 +43,7 @@ import static com.example.jcgut.notethunder.MainActivity.REQ_GALLERY;
 public class DetailFragment extends Fragment {
 
     public ImageView imgThumb;
-    Button btnSave, btnCancel/*, btnDelete*/;
+    Button btnSave, btnCancel,btnPin/*, btnDelete*/;
     Button btnCamera, btnGallery;
     public EditText editTitle, editContent;
 
@@ -46,9 +53,11 @@ public class DetailFragment extends Fragment {
 
     int id = 0;
     Uri fileUri = null;
+    Bitmap imgX;
     String title = "";
     String content = "";
     String date = "";
+    String CHANNEL_ID = "001";
 
     public DetailFragment() {
         // Required empty public constructor
@@ -58,7 +67,6 @@ public class DetailFragment extends Fragment {
         DetailFragment fragment = new DetailFragment();
         return fragment;
     }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,6 +86,8 @@ public class DetailFragment extends Fragment {
            /* btnDelete = (Button)view.findViewById(R.id.btnDelete);*/
             btnCamera = view.findViewById(R.id.btnCamera);
             btnGallery = view.findViewById(R.id.btnGallery);
+            btnPin = view.findViewById(R.id.btnPin);
+
 
             editTitle.setText("");
             editContent.setText("");
@@ -87,15 +97,16 @@ public class DetailFragment extends Fragment {
            /* btnDelete.setOnClickListener(listener);*/
             btnCamera.setOnClickListener(listener);
             btnGallery.setOnClickListener(listener);
+            btnPin.setOnClickListener(listener);
         }
         if (getArguments() != null) {
             btnSave.setText("UPDATE");
-           /* btnDelete.setVisibility(View.VISIBLE);*/
+           btnPin.setVisibility(View.VISIBLE);
             id = getArguments().getInt("id");
-            fileUri = Uri.parse(new String(getArguments().getString("img")));
-            title = new String(getArguments().getString("title"));
-            content = new String(getArguments().getString("content"));
-            date = new String(getArguments().getString("date"));
+            fileUri = Uri.parse(getArguments().getString("img"));
+            title = getArguments().getString("title");
+            content = getArguments().getString("content");
+            date = getArguments().getString("date");
         }
 
         return view;
@@ -118,6 +129,7 @@ public class DetailFragment extends Fragment {
     }
 
     View.OnClickListener listener = new View.OnClickListener() {
+        @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
         public void onClick(View v) {
             Intent i = null;
@@ -143,13 +155,36 @@ public class DetailFragment extends Fragment {
                 case R.id.btnCancel :
                     detailInterface.backToList();
                     break;
-               /* case R.id.btnDelete :
+                case R.id.btnPin :
                     try {
-                        detailInterface.delete(id);
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    }
-                    break;*/
+                        /*BitmapRegionDecoder decoder = BitmapRegionDecoder.newInstance(String.valueOf(fileUri),false);
+                        Bitmap region = decoder.decodeRegion(new Rect(10, 10, 50, 50), null);*/
+                        imgX = MediaStore.Images.Media.getBitmap(context.getContentResolver(), fileUri);
+                            CharSequence name = "Notes on Fly";// The user-visible name of the channel.
+                            int importance = NotificationManager.IMPORTANCE_HIGH;
+                            NotificationChannel mChannel = new NotificationChannel(CHANNEL_ID, name, importance);
+
+                            Notification notification = new NotificationCompat.Builder(context,CHANNEL_ID)
+                                        .setSmallIcon(R.drawable.ic_event_note_black_24dp)
+                                        .setContentTitle(title)
+                                        .setContentText(content)
+                                        .setLargeIcon(imgX)
+                                        .setStyle(new NotificationCompat.BigPictureStyle()
+                                            .bigPicture(imgX)
+                                            .bigLargeIcon(null))
+                                    .setChannelId(CHANNEL_ID).build();
+
+
+                            NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                                    mNotificationManager.createNotificationChannel(mChannel);
+                                }
+                            // Issue the notification.
+                            mNotificationManager.notify(1, notification);
+                        } catch (Exception e) {
+                                e.printStackTrace();
+                        }
+                    break;
                 case R.id.btnCamera :
                     title = editTitle.getText().toString();
                     content = editContent.getText().toString();

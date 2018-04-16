@@ -1,123 +1,136 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:class="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:class="http://schemas.android.com/apk/res-auto"
     android:background="@color/memoColour"
-    android:clickable="true"
     android:theme="@style/Theme.Design"
     tools:context="com.example.jcgut.notethunder.DetailFragment">
+
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="My Memontum:"
-        android:textSize="20sp"
-        android:gravity="top"
-        android:id="@+id/largeLabel"/>
-    <ScrollView
+        android:id="@+id/largeLabel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/my_memontum"
+        android:textSize="35sp" />
+
+    <ScrollView
         android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/largeLabel">
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <EditText
                 android:id="@+id/editTitle"
-                android:layout_width="match_parent"
+                android:layout_width="200dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="30dp"
+
                 android:hint="@string/title"
-                android:inputType="text"
-                android:gravity="center"/>
-            <com.example.jcgut.notethunder.cutomEdittext.LinedEdittext
-                xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
+                android:inputType="text" />
+
+            <com.example.jcgut.notethunder.cutomEdittext.LinedEdittext xmlns:android="http://schemas.android.com/apk/res/android"
                 android:id="@+id/editContent"
-                android:layout_width="match_parent"
+                android:layout_width="400dp"
                 android:layout_height="match_parent"
                 android:layout_below="@id/editTitle"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="20dp"
                 android:gravity="top"
                 android:hint="@string/your_thoughts" />
         </RelativeLayout>
     </ScrollView>
+
     <ScrollView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/scrollView">
+
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-        <LinearLayout
-            android:id="@+id/imglayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_below="@id/scrollView"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_marginTop="8dp"
-            android:gravity="bottom">
-            <ImageView
-                android:id="@+id/getImg"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
-                class:srcCompat="@drawable/ic_image_black_24dp"
-                android:scaleType="centerInside"/>
+
             <TextView
-                android:layout_width="wrap_content"
+                android:text="@string/attach_image"
+                android:layout_marginTop="10dp"
+                android:textSize="20sp"
+                android:gravity="start"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"/>
+
+            <LinearLayout
+                android:id="@+id/imglayout"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1" />
-            <Button
-                android:id="@+id/btnCamera"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="2dp"
-                android:text="@string/capture"
-                android:layout_gravity="center_vertical"
-                android:drawableLeft="@drawable/ic_camera_alt_black_24dp"/>
-            <Button
-                android:id="@+id/btnGallery"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/gallery"
-                android:layout_gravity="center_vertical"
-                android:drawableLeft="@drawable/ic_photo_album_black_24dp"/>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="bottom"
-            android:id="@+id/bottomButtons"
-            android:layout_below="@id/imglayout">
-            <Button
-                android:id="@+id/btnSave"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:text="@string/save"
-                android:drawableLeft="@drawable/ic_save_black_24dp"/>
-            <Button
-                android:id="@+id/btnCancel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentLeft="true"
-                android:text="@string/cancel"
-                android:drawableLeft="@drawable/ic_cancel_black_24dp"/>
-            <!--<Button
-                android:id="@+id/btnDelete"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toLeftOf="@id/btnSave"
-                android:text="DELETE"
-                android:visibility="gone"
-                android:layout_marginRight="8dp"
-                android:drawableLeft="@drawable/ic_delete_black_24dp"/>-->
-        </LinearLayout>
+                android:layout_marginTop="8dp"
+                android:gravity="bottom"
+                android:orientation="horizontal">
+
+
+                <ImageView
+                    android:id="@+id/getImg"
+                    android:layout_width="130dp"
+                    android:layout_height="130dp"
+                    android:scaleType="centerInside"
+                    class:srcCompat="@drawable/ic_image_black_24dp"
+                    android:layout_marginEnd="4dp"/>
+
+
+                <Button
+                    android:id="@+id/btnCamera"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="5dp"
+                    android:drawableLeft="@drawable/ic_camera_alt_black_24dp"
+                    android:text="@string/capture" />
+
+                <Button
+                    android:id="@+id/btnGallery"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:drawableLeft="@drawable/ic_photo_album_black_24dp"
+                    android:text="@string/gallery" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/bottomButtons"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/imglayout"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btnSave"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/ic_save_black_24dp"
+                    android:text="@string/save"
+                    android:layout_marginEnd="2dp"/>
+
+                <Button
+                    android:id="@+id/btnCancel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="2dp"
+                    android:drawableLeft="@drawable/ic_cancel_black_24dp"
+                    android:text="@string/cancel" />
+
+                <Button
+                    android:id="@+id/btnPin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/ic_pin_drop_black_24dp"
+                    android:text="@string/pin"
+                    android:visibility="gone" />
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 

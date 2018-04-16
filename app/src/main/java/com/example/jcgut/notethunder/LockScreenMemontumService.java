@@ -1,53 +1,25 @@
 package com.example.jcgut.notethunder;
 
-import android.app.IntentService;
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.PixelFormat;
-import android.net.Uri;
-import android.os.Bundle;
 import android.os.IBinder;
-import android.provider.MediaStore;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.example.jcgut.notethunder.cutomEdittext.LinedEdittext;
-import com.example.jcgut.notethunder.data.DBHelper;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.jcgut.notethunder.domain.Memo;
-import com.example.jcgut.notethunder.interfaces.DetailInterface;
-import com.example.jcgut.notethunder.interfaces.ListInterface;
-import com.j256.ormlite.dao.Dao;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Objects;
-
-import static android.app.Activity.RESULT_OK;
-import static android.support.v4.app.ActivityCompat.startActivityForResult;
-import static com.example.jcgut.notethunder.MainActivity.REQ_CAMERA;
-import static com.example.jcgut.notethunder.MainActivity.REQ_GALLERY;
 
 public class LockScreenMemontumService extends Service {
 

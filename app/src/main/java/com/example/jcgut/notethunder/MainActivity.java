@@ -1,34 +1,33 @@
 package com.example.jcgut.notethunder;
 
-import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
+import android.text.Html;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.jcgut.notethunder.data.DBHelper;
 import com.example.jcgut.notethunder.domain.Memo;
 import com.example.jcgut.notethunder.interfaces.DetailInterface;
 import com.example.jcgut.notethunder.interfaces.ListInterface;
 import com.example.jcgut.notethunder.permission.PermissionControl;
+import com.google.android.material.snackbar.Snackbar;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.dao.Dao;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -42,7 +41,7 @@ public class MainActivity extends AppCompatActivity implements ListInterface, De
     DetailFragment detail;
 
     FrameLayout main;
-
+    TextView emptyLabel;
     FragmentManager fm;
     List<Memo> datas;
     Dao<Memo, Long> memoDao;
@@ -54,24 +53,21 @@ public class MainActivity extends AppCompatActivity implements ListInterface, De
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        emptyLabel = (TextView) findViewById(R.id.emptyListlbl);
+
         setFragment();
         try {
             loadData();
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
         list.setData(datas);
         checkPermission();
 
         if (inflateConfig == 1) {
-            Intent lockscreenService = new Intent(this, LockScreenMemontumService.class);
-            startService(lockscreenService);
-            /*Intent lockscreenService = new Intent(this, LockScreenMemontumService.class);
-             //   lockscreenService.putExtra("Memhoes",new MemoWrapper(datas));
-//            lockscreenService.putExtra("memos",new MemoWrapper(data));
-            startService(lockscreenService);*/
-           /*Intent lockscreenActivity = new Intent(this, LockScreenMomentumActivity.class);
-           startActivity(lockscreenActivity);*/
+//            Intent lockscreenService = new Intent(this, LockScreenMemontumService.class);
+//            startService(lockscreenService);
         } else if (inflateConfig == 0){
             Snackbar.make(findViewById(R.id.relay),"Inflater on Lockscreen is Off",Snackbar.LENGTH_SHORT).setAction("action",null).show();
         } else {
@@ -92,13 +88,9 @@ public class MainActivity extends AppCompatActivity implements ListInterface, De
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+       /* if (id == R.id.action_settings) {
             AlertDialog.Builder builder;
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                builder = new AlertDialog.Builder(this);
-            } else {
-                builder = new AlertDialog.Builder(this);
-            }
+            builder = new AlertDialog.Builder(this);
             builder.setTitle("Settings")
                     .setMessage("You, Mimi Imfurst. Mimi Imfurst was number third in the voting? I could not believe it.")
                     .setPositiveButton("ON", new DialogInterface.OnClickListener() {
@@ -117,22 +109,39 @@ public class MainActivity extends AppCompatActivity implements ListInterface, De
                     })
                     .setIcon(R.drawable.ic_settings_black_24dp)
                     .show();
-        }
+        }*/
 
         if (id == R.id.action_about) {
-            Toast.makeText(this, "Developed By MarcelloBlue, JsPark, and the Teletubbies", Toast.LENGTH_SHORT).show();
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("About");
+            builder.setMessage(Html.fromHtml("Developed By MarcelloCarlo and the Teletubbies."+"\n"+"<a href='https://github.com/MarcelloCarlo/Memontum'>https://github.com/MarcelloCarlo/Memontum</a>"));
+            builder.setCancelable(false).setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                }
+            });
+            AlertDialog dialog = builder.create();
+            dialog.show();
         }
-        if (id == R.id.action_inflate) {
+        /*if (id == R.id.action_inflate) {
             Snackbar.make(findViewById(R.id.relay), "C'mon Teletubby, Teleport us to Mars! ", Snackbar.LENGTH_LONG).setAction("Action", null).show();
-          /*  Intent lockscreenActivity = new Intent(this, LockScreenMomentumActivity.class);
-            startActivity(lockscreenActivity);*/
-        }
+          *//*  Intent lockscreenActivity = new Intent(this, LockScreenMomentumActivity.class);
+            startActivity(lockscreenActivity);*//*
+        }*/
         return super.onOptionsItemSelected(item);
     }
+
     private void loadData() throws SQLException {
         DBHelper dbHelper = OpenHelperManager.getHelper(this, DBHelper.class);
         memoDao = dbHelper.getMemoDao();
         datas = memoDao.queryForAll();
+
+        if(!datas.isEmpty()){
+            emptyLabel.setText("");
+        } else {
+            emptyLabel.setText(R.string.emptyListlbl);
+        }
     }
 
 

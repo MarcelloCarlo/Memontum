@@ -14,4 +14,10 @@
     <string name="cancel">Cancel</string>
     <string name="gallery">gallery</string>
     <string name="selecty">select</string>
+    <string name="todo1">TODO</string>
+    <string name="todo">TODO</string>
+    <string name="emptyListlbl">Click the "+" button below to start.</string>
+    <string name="my_memontum">My Memontum</string>
+    <string name="pin">Pin</string>
+    <string name="attach_image">Attach Image</string>
 </resources>

@@ -1,8 +1,9 @@
 package com.example.jcgut.notethunder;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class SplashScreen extends AppCompatActivity {
 
@@ -16,7 +17,7 @@ public class SplashScreen extends AppCompatActivity {
             @Override
                     public void  run(){
                         try {
-                            sleep(2000);
+                            sleep(900);
                             Intent  nextActivity = new Intent(getApplicationContext(),MainActivity.class);
                             startActivity(nextActivity);
                             finish();
