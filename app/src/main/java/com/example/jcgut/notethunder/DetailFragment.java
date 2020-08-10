@@ -99,10 +99,12 @@ public class DetailFragment extends Fragment {
             btnCamera.setOnClickListener(listener);
             btnGallery.setOnClickListener(listener);
             btnPin.setOnClickListener(listener);
+            btnCamera.setVisibility(View.GONE);
         }
         if (getArguments() != null) {
+            btnCamera.setVisibility(View.GONE);
             btnSave.setText("UPDATE");
-           btnPin.setVisibility(View.VISIBLE);
+            btnPin.setVisibility(View.VISIBLE);
             id = getArguments().getInt("id");
             fileUri = Uri.parse(getArguments().getString("img"));
             title = getArguments().getString("title");
