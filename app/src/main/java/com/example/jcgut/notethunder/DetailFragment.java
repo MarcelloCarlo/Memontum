@@ -58,6 +58,7 @@ public class DetailFragment extends Fragment {
     String content = "";
     String date = "";
     String CHANNEL_ID = "001";
+    CharSequence chName = "Notes on Fly";
 
     public DetailFragment() {
         // Required empty public constructor
@@ -160,27 +161,37 @@ public class DetailFragment extends Fragment {
                         /*BitmapRegionDecoder decoder = BitmapRegionDecoder.newInstance(String.valueOf(fileUri),false);
                         Bitmap region = decoder.decodeRegion(new Rect(10, 10, 50, 50), null);*/
                         imgX = MediaStore.Images.Media.getBitmap(context.getContentResolver(), fileUri);
-                            CharSequence name = "Notes on Fly";// The user-visible name of the channel.
-                            int importance = NotificationManager.IMPORTANCE_HIGH;
-                            NotificationChannel mChannel = new NotificationChannel(CHANNEL_ID, name, importance);
 
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                            int importance = NotificationManager.IMPORTANCE_HIGH;
+                            NotificationChannel mChannel = new NotificationChannel(CHANNEL_ID, chName, importance);
                             Notification notification = new NotificationCompat.Builder(context,CHANNEL_ID)
-                                        .setSmallIcon(R.drawable.ic_event_note_black_24dp)
-                                        .setContentTitle(title)
-                                        .setContentText(content)
-                                        .setLargeIcon(imgX)
-                                        .setStyle(new NotificationCompat.BigPictureStyle()
+                                    .setSmallIcon(R.drawable.ic_event_note_black_24dp)
+                                    .setContentTitle(title)
+                                    .setContentText(content)
+                                    .setLargeIcon(imgX)
+                                    .setStyle(new NotificationCompat.BigPictureStyle()
                                             .bigPicture(imgX)
                                             .bigLargeIcon(null))
                                     .setChannelId(CHANNEL_ID).build();
 
-
                             NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
-                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                                    mNotificationManager.createNotificationChannel(mChannel);
-                                }
+                            mNotificationManager.createNotificationChannel(mChannel);
                             // Issue the notification.
                             mNotificationManager.notify(1, notification);
+                        } else {
+                            Notification notification = new Notification.Builder(context)
+                                    .setSmallIcon(R.drawable.ic_event_note_black_24dp)
+                                    .setContentTitle(chName +": "+title)
+                                    .setContentText(content)
+                                    .setLargeIcon(imgX)
+                                    .setPriority(Notification.PRIORITY_MAX)
+                                    .build();
+
+                            NotificationManager notificationManager = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
+                            notificationManager.notify(001, notification);
+                        }
+
                         } catch (Exception e) {
                                 e.printStackTrace();
                         }
